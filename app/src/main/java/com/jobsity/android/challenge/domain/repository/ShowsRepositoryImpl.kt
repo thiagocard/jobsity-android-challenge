@@ -4,23 +4,21 @@ import com.jobsity.android.challenge.data.model.Show
 import com.jobsity.android.challenge.data.service.SearchService
 import com.jobsity.android.challenge.data.service.ShowsService
 import com.jobsity.android.challenge.domain.mapper.Mapper
-import com.jobsity.android.challenge.domain.mapper.ShowAtListMapper
-import com.jobsity.android.challenge.domain.mapper.ShowDetailsMapper
 import com.jobsity.android.challenge.domain.model.ShowAtList
 import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.domain.model.ShowsAtList
+import com.jobsity.android.challenge.domain.paging.ShowsPagingSource
 
 class ShowsRepositoryImpl(
     private val showsService: ShowsService,
     private val searchService: SearchService,
+    private val showsPagingSource: ShowsPagingSource,
     private val showAtListMapper: Mapper<Show, ShowAtList>,
-    private val showDetailsMapper: Mapper<Show, ShowDetails>
+    private val showDetailsMapper: Mapper<Show, ShowDetails>,
 ) : ShowsRepository {
 
-    override suspend fun shows(): Result<ShowsAtList>  = kotlin.runCatching {
-        showsService.getShows(1)
-            .map { showAtListMapper.map(it) }
-            .let { ShowsAtList(it) }
+    override fun shows(): Result<ShowsPagingSource>  = kotlin.runCatching {
+        showsPagingSource
     }
 
     override suspend fun search(query: String): Result<ShowsAtList> = kotlin.runCatching {

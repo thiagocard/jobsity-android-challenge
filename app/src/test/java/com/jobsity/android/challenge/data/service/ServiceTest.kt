@@ -10,7 +10,7 @@ import java.net.HttpURLConnection
 
 abstract class ServiceTest {
 
-    private val server = MockWebServer()
+    protected val server = MockWebServer()
 
     protected val api = TvMazeApi(apiUrl = "http://localhost:8082/")
 

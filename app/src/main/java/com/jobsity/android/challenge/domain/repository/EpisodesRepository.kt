@@ -7,6 +7,6 @@ interface EpisodesRepository {
 
     suspend fun episode(id: Int): Result<EpisodeDetails>
 
-    suspend fun episodes(id: Int): Result<EpisodesOfShow>
+    suspend fun episodes(showId: Int): Result<EpisodesOfShow>
 
 }

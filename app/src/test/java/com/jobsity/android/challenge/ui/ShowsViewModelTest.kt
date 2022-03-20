@@ -2,6 +2,7 @@ package com.jobsity.android.challenge.ui
 
 import com.jobsity.android.challenge.domain.model.ShowsAtList
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
+import com.jobsity.android.challenge.ui.shows.ShowsViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

@@ -18,6 +18,6 @@ class ShowDetailsMapperTest {
         assertEquals("Airs at", mapped.airsAt)
         assertEquals(show.genres, mapped.genres)
         assertEquals(show.summary, mapped.summary)
-        assertEquals(listOf(), mapped.episodes)
+        assertEquals(show.rating.average, mapped.rating)
     }
 }

@@ -12,6 +12,7 @@ object ShowDetailsMapper : Mapper<Show, ShowDetails> {
         airsAt = "Airs at",
         genres = input.genres,
         summary = input.summary ?: "",
+        rating = input.rating.average ?: 0.0
     )
 
 }

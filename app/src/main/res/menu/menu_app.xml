@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/shows"
+        android:icon="@drawable/ic_outline_tv_24"
+        android:title="@string/shows" />
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_outline_search_24"
+        android:title="@string/search" />
+
+    <item
+        android:id="@+id/my_lib"
+        android:icon="@drawable/ic_outline_bookmarks_24"
+        android:title="@string/my_library" />
+
+</menu>

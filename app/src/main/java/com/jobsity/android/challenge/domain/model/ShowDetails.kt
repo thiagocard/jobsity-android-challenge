@@ -8,5 +8,5 @@ data class ShowDetails(
     val airsAt: String,
     val genres: List<String>,
     val summary: String,
-    val episodes: List<ShowEpisodes> = listOf()
+    val rating: Double
 )
