@@ -8,21 +8,29 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.jobsity.android.challenge.ui.theme.MyApplicationTheme
+import com.jobsity.android.challenge.domain.model.ShowsAtList
+import com.jobsity.android.challenge.ui.ShowsViewModel
+import com.jobsity.android.challenge.ui.ViewState
+import com.jobsity.android.challenge.ui.theme.ShowsAppTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val showsViewModel by viewModel<ShowsViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
+            ShowsAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    ShowsScreen(showsViewModel)
                 }
             }
         }
@@ -30,14 +38,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MyApplicationTheme {
-        Greeting("Android")
-    }
+fun ShowsScreen(viewModel: ShowsViewModel) {
+    val state: ViewState<ShowsAtList> by viewModel.shows.collectAsState(initial = ViewState.Loading)
+    Text(text = "Hello!")
 }

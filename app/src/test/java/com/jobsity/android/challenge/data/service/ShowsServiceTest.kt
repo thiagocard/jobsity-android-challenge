@@ -1,10 +1,10 @@
 package com.jobsity.android.challenge.data.service
 
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.threeten.bp.LocalDate
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 class ShowsServiceTest : ServiceTest() {

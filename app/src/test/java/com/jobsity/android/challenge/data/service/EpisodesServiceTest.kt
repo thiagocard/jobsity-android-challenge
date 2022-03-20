@@ -4,13 +4,13 @@ import com.jobsity.android.challenge.data.model.Image
 import com.jobsity.android.challenge.data.model.Links
 import com.jobsity.android.challenge.data.model.Rating
 import com.jobsity.android.challenge.data.model.Self
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 class EpisodesServiceTest : ServiceTest() {

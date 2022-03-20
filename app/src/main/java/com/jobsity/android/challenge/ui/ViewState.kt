@@ -7,4 +7,6 @@ sealed class ViewState<out T> {
 
     fun isLoaded() = this is Loaded
     fun isLoading() = this is Loading
+    fun isError() = this is Error
+    fun errorMessage() = if (this is Error) this.throwable.message else null
 }

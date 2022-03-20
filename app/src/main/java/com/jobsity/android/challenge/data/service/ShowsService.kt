@@ -20,9 +20,7 @@ interface ShowsService {
 
     @GET("shows/{id}/episodes")
     suspend fun getEpisodes(
-        @Path("id") id: Int,
-        @Query("page") page: Int
+        @Path("id") id: Int
     ): List<Episode>
-
 
 }
