@@ -1,16 +1,27 @@
 package com.jobsity.android.challenge.ui.favorite_shows
 
 import androidx.lifecycle.ViewModel
-import com.jobsity.android.challenge.domain.model.ShowAtList
+import com.jobsity.android.challenge.domain.model.SortOrder
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapMerge
 
 class FavoriteShowsViewModel(
     private val showsRepository: ShowsRepository
 ) : ViewModel() {
 
-    suspend fun fetchFavorites(): Flow<List<ShowAtList>> {
-        return showsRepository.allFavorites()
+    private val order = MutableStateFlow(SortOrder.ASC)
+
+    val favoriteShows = order
+        .flatMapMerge { order -> showsRepository.allFavorites(order) }
+
+    fun reverseOrder() {
+        if (order.value == SortOrder.ASC) {
+            order.value = SortOrder.DESC
+        } else {
+            order.value = SortOrder.ASC
+        }
     }
 
 }
+

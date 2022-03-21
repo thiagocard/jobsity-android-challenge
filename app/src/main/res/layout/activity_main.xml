@@ -87,7 +87,6 @@
             android:src="@drawable/ic_baseline_favorite_24"
             android:visibility="gone"
             app:backgroundTint="@color/purple_200"
-            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
             tools:visibility="visible" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -37,6 +37,11 @@ class FavoriteShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as MainActivity).apply {
+            showFab(R.drawable.ic_baseline_sort_by_alpha_24)
+            setFabListener { viewModel.reverseOrder() }
+        }
+
         val showsAdapter = ShowsPagingDataAdapter { show ->
             (activity as MainActivity).navController
                 .navigate(FavoriteShowsFragmentDirections.actionShowsToShowDetails(show.id))
@@ -47,7 +52,7 @@ class FavoriteShowsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.fetchFavorites().collectLatest { favorites ->
+                    viewModel.favoriteShows.collectLatest { favorites ->
                         if (favorites.isNotEmpty()) {
                             showsAdapter.submitData(PagingData.from(favorites))
                         } else {
@@ -65,6 +70,7 @@ class FavoriteShowsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as MainActivity).hideFab()
         _binding = null
     }
 

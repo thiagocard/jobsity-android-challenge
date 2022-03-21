@@ -7,6 +7,7 @@ import com.jobsity.android.challenge.domain.mapper.Mapper
 import com.jobsity.android.challenge.domain.model.ShowAtList
 import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.domain.model.ShowsAtList
+import com.jobsity.android.challenge.domain.model.SortOrder
 import com.jobsity.android.challenge.domain.paging.ShowsPagingSource
 import com.jobsity.android.challenge.persistence.dao.FavoriteShowDao
 import com.jobsity.android.challenge.persistence.entity.FavoriteShow
@@ -55,9 +56,17 @@ class ShowsRepositoryImpl(
         return favoriteShowDao.delete(id)
     }
 
-    override suspend fun allFavorites(): Flow<List<ShowAtList>> {
+    override suspend fun allFavorites(sortOrder: SortOrder): Flow<List<ShowAtList>> {
         return favoriteShowDao.findAll()
-            .map { list -> list.map { favShowToShowAtListMapper.map(it) } }
+            .map { list ->
+                list.map { favShowToShowAtListMapper.map(it) }
+                    .let {
+                        when(sortOrder) {
+                            SortOrder.ASC -> it.sortedBy { it.name }
+                            SortOrder.DESC -> it.sortedByDescending { it.name }
+                        }
+                    }
+            }
     }
 
     override suspend fun isFavorite(id: Int): Flow<Boolean?> {
