@@ -10,8 +10,8 @@ object EpisodeDetailsMapper : Mapper<Episode, EpisodeDetails> {
         name = input.name,
         number = input.number,
         season = input.season,
-        summary = input.summary,
-        image = input.image.original
+        summary = input.summary ?: "",
+        image = input.image?.original ?: ""
     )
 
 }

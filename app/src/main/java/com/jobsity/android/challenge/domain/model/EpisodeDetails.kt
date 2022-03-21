@@ -7,4 +7,6 @@ data class EpisodeDetails(
     val season: Int,
     val summary: String,
     val image: String
-)
+) {
+    fun fullName() = "S${String.format("%02d", season)}E${String.format("%02d", number)} · $name"
+}

@@ -8,5 +8,7 @@ data class ShowDetails(
     val airsAt: String,
     val genres: List<String>,
     val summary: String,
-    val rating: Double
+    val rating: Double,
+    val status: String,
+    val year: Int,
 )

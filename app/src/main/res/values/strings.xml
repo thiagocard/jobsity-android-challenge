@@ -6,4 +6,8 @@
     <string name="poster">poster</string>
     <string name="rating">rating</string>
     <string name="out_of_ten">/10</string>
+    <string name="episodes">Episodes</string>
+    <string name="summary">Summary</string>
+    <string name="genres">Genres</string>
+    <string name="episode_screenshot">episode screenshot</string>
 </resources>

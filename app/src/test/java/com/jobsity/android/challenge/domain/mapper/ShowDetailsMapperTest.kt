@@ -19,5 +19,7 @@ class ShowDetailsMapperTest {
         assertEquals(show.genres, mapped.genres)
         assertEquals(show.summary, mapped.summary)
         assertEquals(show.rating.average, mapped.rating)
+        assertEquals(show.status, mapped.status)
+        assertEquals(show.premiered?.year, mapped.year)
     }
 }

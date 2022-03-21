@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.jobsity.android.challenge.BR
 import com.jobsity.android.challenge.databinding.ItemShowAtListBinding
 import com.jobsity.android.challenge.domain.model.ShowAtList
+import com.jobsity.android.challenge.ui.common.adapter.ShowAtListViewHolder
 
 val diffCallback = object : DiffUtil.ItemCallback<ShowAtList>() {
 
@@ -21,7 +20,7 @@ val diffCallback = object : DiffUtil.ItemCallback<ShowAtList>() {
 
 }
 
-class ShowsAdapter(
+class ShowsPagingDataAdapter(
     private val onItemClick: (ShowAtList) -> Unit
 ) : PagingDataAdapter<ShowAtList, ShowAtListViewHolder>(diffCallback) {
 
@@ -34,21 +33,5 @@ class ShowsAdapter(
             ItemShowAtListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ShowAtListViewHolder(binding, onItemClick)
     }
-
-}
-
-class ShowAtListViewHolder(
-    private val binding: ItemShowAtListBinding,
-    private val onItemClick: (ShowAtList) -> Unit
-) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(item: ShowAtList?) {
-        item?.let {
-            itemView.setOnClickListener { onItemClick(item) }
-            binding.setVariable(BR.show, it)
-            binding.executePendingBindings()
-        }
-    }
-
 
 }

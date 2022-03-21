@@ -12,7 +12,9 @@ object ShowDetailsMapper : Mapper<Show, ShowDetails> {
         airsAt = "Airs at",
         genres = input.genres,
         summary = input.summary ?: "",
-        rating = input.rating.average ?: 0.0
+        rating = input.rating.average ?: 0.0,
+        status = input.status,
+        year = input.premiered?.year ?: -1,
     )
 
 }

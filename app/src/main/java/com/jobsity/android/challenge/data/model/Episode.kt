@@ -23,13 +23,13 @@ data class Episode(
     @Serializable(with = LocalTimeSerializer::class)
     val airtime: LocalTime,
     val id: Int,
-    val image: Image,
+    val image: Image?,
     val name: String,
     val number: Int,
     val rating: Rating,
     val runtime: Int,
     val season: Int,
-    val summary: String,
+    val summary: String?,
     val type: String,
     val url: String
 )

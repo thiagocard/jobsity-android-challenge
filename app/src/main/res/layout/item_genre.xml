@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="genre"
+            type="String" />
+    </data>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:text="@{genre}"
+        tools:text="Comedy"
+        android:background="@drawable/bg_genre"
+        android:padding="@dimen/quarter_margin"
+        android:layout_marginEnd="@dimen/half_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</layout>

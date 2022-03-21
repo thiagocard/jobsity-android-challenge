@@ -10,6 +10,7 @@ object EpisodeOfShowMapper : Mapper<Episode, EpisodeOfShow> {
         name = input.name,
         number = input.number,
         season = input.season,
+        image = input.image?.medium ?: ""
     )
 
 }

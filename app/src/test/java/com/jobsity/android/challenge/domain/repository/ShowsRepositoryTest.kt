@@ -1,6 +1,5 @@
 package com.jobsity.android.challenge.domain.repository
 
-import androidx.paging.PagingSource
 import com.jobsity.android.challenge.data.model.SearchResult
 import com.jobsity.android.challenge.data.model.Show
 import com.jobsity.android.challenge.data.service.SearchService
@@ -13,6 +12,7 @@ import com.jobsity.android.challenge.test.fromJson
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -27,7 +27,9 @@ class ShowsRepositoryTest {
         override fun map(input: Show) = ShowAtList(
             id = input.id,
             name = input.name,
-            poster = input.image?.original ?: ""
+            poster = input.image?.original ?: "",
+            status = "Continuing",
+            year = 2022
         )
     }
     private val showDetailsMapper = object : Mapper<Show, ShowDetails> {
@@ -38,7 +40,9 @@ class ShowsRepositoryTest {
             airsAt = "Airs at some date",
             genres = input.genres,
             summary = input.summary ?: "N/A",
-            rating = 10.0
+            rating = 10.0,
+            status = input.status,
+            year = 2022
         )
     }
     private val showsPagingSource by lazy { ShowsPagingSource(showsService, showAtListMapper) }
@@ -47,9 +51,9 @@ class ShowsRepositoryTest {
         ShowsRepositoryImpl(
             showsService,
             searchService,
+            showsPagingSource,
             showAtListMapper,
             showDetailsMapper,
-            showsPagingSource
         )
     }
 
@@ -79,7 +83,7 @@ class ShowsRepositoryTest {
         val expected = fromJson<List<SearchResult>>(this, "search_shows.json")
         coEvery { searchService.searchShows(any()) } returns expected
 
-        val result = repo.search("girl")
+        val result = repo.search("girl").single()
         assertTrue(result.isSuccess)
         val shows = result.getOrThrow().shows
         assertEquals(expected.size, shows.size)
@@ -92,7 +96,7 @@ class ShowsRepositoryTest {
         val expected = fromJson<Show>(this, "get_show.json")
         coEvery { showsService.getShow(any()) } returns expected
 
-        val result = repo.show(1)
+        val result = repo.show(1).single()
         assertTrue(result.isSuccess)
         val show = result.getOrThrow()
         assertEquals(expected.name, show.name)

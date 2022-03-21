@@ -9,7 +9,7 @@ import com.jobsity.android.challenge.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     val navController: NavController
         get() = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.toolbar.setupWithNavController(navController)
+        binding.bottomNavView.setupWithNavController(navController)
     }
 
 }

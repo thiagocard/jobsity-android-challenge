@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/shows"
         android:name="com.jobsity.android.challenge.ui.shows.ShowsFragment"
-        tools:layout="@layout/fragment_shows"
-        android:label="Shows" >
+        android:label="Shows"
+        tools:layout="@layout/fragment_shows">
         <action
             android:id="@+id/action_shows_to_show_details"
             app:destination="@id/show_details" />
@@ -18,9 +18,28 @@
     <fragment
         android:id="@+id/show_details"
         android:name="com.jobsity.android.challenge.ui.show_details.ShowDetailsFragment"
-        tools:layout="@layout/fragment_show_details" >
+        tools:layout="@layout/fragment_show_details">
         <argument
-            android:name="show-id"
+            android:name="show_id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_show_details_to_episode_details"
+            app:destination="@id/episode_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/shows_search"
+        android:name="com.jobsity.android.challenge.ui.shows_search.ShowsSearchFragment"
+        tools:layout="@layout/fragment_shows_search" >
+        <action
+            android:id="@+id/action_shows_search_to_show_details"
+            app:destination="@id/show_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/episode_details"
+        android:name="com.jobsity.android.challenge.ui.episode_details.EpisodeDetailsFragment"
+        tools:layout="@layout/fragment_episode_details" >
+        <argument
+            android:name="episode_id"
             app:argType="integer" />
     </fragment>
 </navigation>

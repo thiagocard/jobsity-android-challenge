@@ -18,6 +18,8 @@ val sampleShowDetails = ShowDetails(
     genres = listOf("Drama", "Suspense", "Fiction"),
     summary = "Bla bla bla...",
     rating = 9.5,
+    status = "Ended",
+    year = 2022,
 )
 
 /**

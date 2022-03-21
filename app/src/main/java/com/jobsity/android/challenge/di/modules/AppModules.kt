@@ -11,9 +11,10 @@ import com.jobsity.android.challenge.domain.repository.EpisodesRepository
 import com.jobsity.android.challenge.domain.repository.EpisodesRepositoryImpl
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
 import com.jobsity.android.challenge.domain.repository.ShowsRepositoryImpl
-import com.jobsity.android.challenge.domain.usecase.GetShowWithEpisodesUseCase
+import com.jobsity.android.challenge.ui.episode_details.EpisodeDetailsViewModel
 import com.jobsity.android.challenge.ui.show_details.ShowDetailsViewModel
 import com.jobsity.android.challenge.ui.shows.ShowsViewModel
+import com.jobsity.android.challenge.ui.shows_search.ShowsSearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -53,9 +54,8 @@ val appModules = module {
         )
     }
 
-    // Use cases
-    factory { GetShowWithEpisodesUseCase(get(), get()) }
-
     viewModel { ShowsViewModel(get()) }
-    viewModel { ShowDetailsViewModel(get()) }
+    viewModel { ShowDetailsViewModel(get(), get(), get()) }
+    viewModel { ShowsSearchViewModel(get()) }
+    viewModel { EpisodeDetailsViewModel(get()) }
 }

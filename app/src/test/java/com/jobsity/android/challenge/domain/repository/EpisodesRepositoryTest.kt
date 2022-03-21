@@ -10,13 +10,14 @@ import com.jobsity.android.challenge.test.fromJson
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
-class EpisodesRepositoryImplTest {
+class EpisodesRepositoryTest {
 
     private val episodesService = mockk<EpisodesService>()
     private val showsService = mockk<ShowsService>()
@@ -26,7 +27,7 @@ class EpisodesRepositoryImplTest {
             name = input.name,
             number = input.number,
             season = input.season,
-            summary = input.summary,
+            summary = input.summary ?: "",
             image = "http://url.to.image/${input.id}"
         )
     }
@@ -35,7 +36,8 @@ class EpisodesRepositoryImplTest {
             id = input.id,
             name = input.name,
             number = input.number,
-            season = input.season
+            season = input.season,
+            image = input.image?.medium ?: "",
         )
     }
 
@@ -53,7 +55,7 @@ class EpisodesRepositoryImplTest {
         val expected = fromJson<Episode>(this, "get_episode.json")
         coEvery { episodesService.getEpisode(any()) } returns expected
 
-        val result = repo.episode(1)
+        val result = repo.episode(1).single()
 
         assertTrue(result.isSuccess)
         val episode = result.getOrThrow()
@@ -68,10 +70,12 @@ class EpisodesRepositoryImplTest {
         val expected = fromJson<List<Episode>>(this, "get_show_episodes.json")
         coEvery { showsService.getEpisodes(any()) } returns expected
 
-        val result = repo.episodes(1)
+        val result = repo.episodes(1).single()
 
         assertTrue(result.isSuccess)
-        assertEquals(expected.size, result.getOrThrow().episodes.size)
+        val episodes = result.getOrThrow()
+        // Remove the number of headers from the list of episodes to compare the # of episodes
+        assertEquals(expected.size, episodes.episodes.size - episodes.episodes.filter { it.seasonHeader != null }.size)
     }
 
 }
