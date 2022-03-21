@@ -15,7 +15,7 @@ class ShowDetailsMapperTest {
         assertEquals(show.id, mapped.id)
         assertEquals(show.name, mapped.name)
         assertEquals(show.image?.original, mapped.poster)
-        assertEquals("Airs at", mapped.airsAt)
+        assertEquals("Thursday, 22:00", mapped.airsAt)
         assertEquals(show.genres, mapped.genres)
         assertEquals(show.summary, mapped.summary)
         assertEquals(show.rating.average, mapped.rating)

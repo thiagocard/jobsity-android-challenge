@@ -5,7 +5,7 @@ data class ShowDetails(
     val name: String,
     val poster: String,
     /** Days and time during which the series airs */
-    val airsAt: String,
+    val airsAt: String?,
     val genres: List<String>,
     val summary: String,
     val rating: Double,

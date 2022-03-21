@@ -9,7 +9,7 @@ object ShowDetailsMapper : Mapper<Show, ShowDetails> {
         id = input.id,
         name = input.name,
         poster = input.image?.original ?: "",
-        airsAt = "Airs at",
+        airsAt = "${input.schedule.days.joinToString()}, ${input.schedule.time}",
         genres = input.genres,
         summary = input.summary ?: "",
         rating = input.rating.average ?: 0.0,
