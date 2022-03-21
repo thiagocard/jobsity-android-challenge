@@ -1,9 +1,7 @@
 package com.jobsity.android.challenge.ui.shows_search
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -11,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
 import com.jobsity.android.challenge.MainActivity
 import com.jobsity.android.challenge.R
@@ -27,6 +26,34 @@ class ShowsSearchFragment : Fragment() {
 
     private var _binding: FragmentShowsSearchBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_search, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        (menu.findItem(R.id.search_view)?.actionView as? SearchView)?.apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.setQuery(query)
+                    clearFocus()
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+
+            })
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,19 +74,6 @@ class ShowsSearchFragment : Fragment() {
 
         binding.recyclerView.adapter = showsAdapter
 
-        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.setQuery(query)
-                binding.searchView.clearFocus()
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-
-        })
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -75,15 +89,28 @@ class ShowsSearchFragment : Fragment() {
                             }
                             is ViewState.Loaded -> {
                                 stopLoading()
-                                val adapter = ShowsSearchAdapter(state.data.shows) { show ->
-                                    (activity as MainActivity).navController
-                                        .navigate(ShowsSearchFragmentDirections.actionShowsSearchToShowDetails(show.id))
+                                if (state.data.shows.isNotEmpty()) {
+                                    val adapter = ShowsPagingDataAdapter() { show ->
+                                        (activity as MainActivity).navController
+                                            .navigate(
+                                                ShowsSearchFragmentDirections.actionShowsSearchToShowDetails(
+                                                    show.id
+                                                )
+                                            )
+                                    }
+                                    binding.recyclerView.adapter = adapter
+                                    adapter.submitData(PagingData.from(state.data.shows))
+                                } else {
+                                    Snackbar.make(
+                                        binding.root,
+                                        getString(R.string.no_shows_found),
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
                                 }
-                                binding.recyclerView.adapter = adapter
                             }
                             ViewState.Loading -> {
                                 binding.progressBar.isVisible = true
-                                binding.constraintLayout.isVisible = false
+                                binding.recyclerView.isVisible = false
                             }
                             ViewState.Idle -> {
                                 stopLoading()
@@ -97,11 +124,12 @@ class ShowsSearchFragment : Fragment() {
 
     private fun stopLoading() {
         binding.progressBar.isVisible = false
-        binding.constraintLayout.isVisible = true
+        binding.recyclerView.isVisible = true
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding?.recyclerView?.adapter = null
         _binding = null
     }
 

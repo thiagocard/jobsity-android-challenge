@@ -18,3 +18,4 @@ object ShowDetailsMapper : Mapper<Show, ShowDetails> {
     )
 
 }
+

@@ -2,6 +2,8 @@ package com.jobsity.android.challenge.domain.mapper
 
 import com.jobsity.android.challenge.data.model.Episode
 import com.jobsity.android.challenge.domain.model.EpisodeDetails
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
 
 object EpisodeDetailsMapper : Mapper<Episode, EpisodeDetails> {
 
@@ -11,7 +13,8 @@ object EpisodeDetailsMapper : Mapper<Episode, EpisodeDetails> {
         number = input.number,
         season = input.season,
         summary = input.summary ?: "",
-        image = input.image?.original ?: ""
+        image = input.image?.original ?: "",
+        airsAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(input.airstamp)
     )
 
 }

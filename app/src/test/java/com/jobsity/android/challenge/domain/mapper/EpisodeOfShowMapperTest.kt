@@ -4,6 +4,7 @@ import com.jobsity.android.challenge.data.model.Episode
 import com.jobsity.android.challenge.domain.model.EpisodeOfShow
 import com.jobsity.android.challenge.test.fromJson
 import org.junit.Test
+import org.threeten.bp.format.DateTimeFormatter
 import kotlin.test.assertEquals
 
 class EpisodeOfShowMapperTest {
@@ -21,6 +22,11 @@ class EpisodeOfShowMapperTest {
         assertEquals(episode.season, mapped.season)
         assertEquals(episode.number, mapped.number)
         assertEquals(episode.image?.medium, mapped.image)
+        assertEquals(
+            "${
+                DateTimeFormatter.ofPattern("EEEE").format(episode.airdate)
+            }, ${DateTimeFormatter.ofPattern("h:mm a").format(episode.airtime)}", mapped.airsAt
+        )
     }
 
 }

@@ -28,7 +28,8 @@ class EpisodesRepositoryTest {
             number = input.number,
             season = input.season,
             summary = input.summary ?: "",
-            image = "http://url.to.image/${input.id}"
+            image = "http://url.to.image/${input.id}",
+            airsAt = ""
         )
     }
     private val episodeOfShowMapper = object : Mapper<Episode, EpisodeOfShow> {
@@ -38,6 +39,7 @@ class EpisodesRepositoryTest {
             number = input.number,
             season = input.season,
             image = input.image?.medium ?: "",
+            airsAt = "Airs at someday"
         )
     }
 
@@ -74,8 +76,7 @@ class EpisodesRepositoryTest {
 
         assertTrue(result.isSuccess)
         val episodes = result.getOrThrow()
-        // Remove the number of headers from the list of episodes to compare the # of episodes
-        assertEquals(expected.size, episodes.episodes.size - episodes.episodes.filter { it.seasonHeader != null }.size)
+        assertEquals(expected.size, episodes.seasons.flatMap { it.episodes }.size)
     }
 
 }

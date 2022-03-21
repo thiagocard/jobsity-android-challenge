@@ -8,10 +8,13 @@ import com.jobsity.android.challenge.domain.mapper.Mapper
 import com.jobsity.android.challenge.domain.model.ShowAtList
 import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.domain.paging.ShowsPagingSource
+import com.jobsity.android.challenge.persistence.dao.FavoriteShowDao
+import com.jobsity.android.challenge.persistence.entity.FavoriteShow
 import com.jobsity.android.challenge.test.fromJson
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -23,6 +26,7 @@ class ShowsRepositoryTest {
 
     private val showsService = mockk<ShowsService>()
     private val searchService = mockk<SearchService>()
+    private val favoriteShowDao = mockk<FavoriteShowDao>()
     private val showAtListMapper = object : Mapper<Show, ShowAtList> {
         override fun map(input: Show) = ShowAtList(
             id = input.id,
@@ -45,15 +49,36 @@ class ShowsRepositoryTest {
             year = 2022
         )
     }
+    private val favoriteShowMapper = object : Mapper<ShowAtList, FavoriteShow> {
+        override fun map(input: ShowAtList) = FavoriteShow(
+            id = input.id,
+            name = input.name,
+            poster = input.poster,
+            status = input.status,
+            year = input.year,
+        )
+    }
+    private val favShowToShowAtListMapper = object : Mapper<FavoriteShow, ShowAtList> {
+        override fun map(input: FavoriteShow) = ShowAtList(
+            id = input.id,
+            name = input.name,
+            poster = input.poster,
+            status = input.status,
+            year = input.year,
+        )
+    }
     private val showsPagingSource by lazy { ShowsPagingSource(showsService, showAtListMapper) }
 
     private val repo by lazy {
         ShowsRepositoryImpl(
-            showsService,
-            searchService,
-            showsPagingSource,
-            showAtListMapper,
-            showDetailsMapper,
+            showsService = showsService,
+            searchService = searchService,
+            showsPagingSource = showsPagingSource,
+            favoriteShowDao = favoriteShowDao,
+            showAtListMapper = showAtListMapper,
+            showDetailsMapper = showDetailsMapper,
+            favoriteShowMapper = favoriteShowMapper,
+            favShowToShowAtListMapper = favShowToShowAtListMapper,
         )
     }
 
@@ -103,6 +128,39 @@ class ShowsRepositoryTest {
         assertEquals(expected.genres, show.genres)
         assertEquals(expected.name, show.name)
         assertEquals(expected.name, show.name)
+    }
+
+    @Test
+    fun `should add a show to favorites with success`() = runTest {
+        coEvery { favoriteShowDao.insert(any()) } returns 1
+
+        val result =
+            repo.addToFavorites(ShowAtList(id = 1, name = "", poster = "", status = "", year = 1))
+        assertEquals(1, result)
+    }
+
+    @Test
+    fun `should remove a show from favorites with success`() = runTest {
+        coEvery { favoriteShowDao.delete(any()) } returns 1
+
+        val result = repo.removeFromFavorites(1)
+        assertEquals(1, result)
+    }
+
+    @Test
+    fun `should list all favorites with success`() = runTest {
+        coEvery { favoriteShowDao.findAll() } returns flowOf(listOf())
+
+        val result = repo.allFavorites().single()
+        assertEquals(listOf(), result)
+    }
+
+    @Test
+    fun `should check show existence on favorites with success`() = runTest {
+        coEvery { favoriteShowDao.exists(any()) } returns flowOf(true)
+
+        val result = repo.isFavorite(1).single()
+        assertEquals(true, result)
     }
 
 }

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.jobsity.android.challenge.BR
 import com.jobsity.android.challenge.MainActivity
+import com.jobsity.android.challenge.R
 import com.jobsity.android.challenge.databinding.FragmentShowDetailsBinding
 import com.jobsity.android.challenge.ui.ViewState
 import kotlinx.coroutines.flow.collectLatest
@@ -50,17 +51,22 @@ class ShowDetailsFragment : Fragment() {
                                 binding.progressBar.isVisible = false
                                 Snackbar.make(
                                     binding.root,
-                                    state.errorMessage() ?: "Error",
+                                    state.errorMessage() ?: getString(R.string.generic_error),
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
                             is ViewState.Loaded -> {
                                 (activity as MainActivity).binding.toolbar.title = state.data.name
-                                (activity as MainActivity).binding.toolbar.subtitle = null // clear subtitle
+                                (activity as MainActivity).binding.toolbar.subtitle =
+                                    null // clear subtitle
                                 binding.progressBar.isVisible = false
                                 binding.constraintLayout.isVisible = true
                                 binding.setVariable(BR.show, state.data)
                                 binding.rvGenres.adapter = GenresAdapter(state.data.genres)
+                                (activity as MainActivity).apply {
+                                    showFab()
+                                    setFabListener { viewModel.addOrRemoveToFavorites() }
+                                }
                             }
                             ViewState.Loading -> {
                                 binding.progressBar.isVisible = true
@@ -71,30 +77,40 @@ class ShowDetailsFragment : Fragment() {
                 }
 
                 launch {
+                    viewModel. isFavorite.collectLatest { isFavorite ->
+                        (activity as MainActivity).changeFabIcon(
+                            if (isFavorite == true) R.drawable.ic_baseline_favorite_24
+                            else R.drawable.ic_baseline_favorite_border_24
+                        )
+                    }
+                }
+
+                launch {
                     viewModel.episodes.collectLatest { state ->
                         when (state) {
                             is ViewState.Error -> {
-                                binding.groupEpisodes.isVisible = false
+                                hideEpisodes()
                                 Log.w(
                                     this@ShowDetailsFragment::class.simpleName,
-                                    "Failed to fetch episodes of show",
+                                    getString(R.string.failed_to_fetch_episodes),
                                     state.throwable
                                 )
                             }
                             is ViewState.Loaded -> {
                                 binding.rvEpisodes.isNestedScrollingEnabled = false
                                 binding.rvEpisodes.adapter =
-                                    EpisodesOfShowAdapter(state.data.episodes) {
+                                    SeasonsAdapter(state.data.seasons) { episode ->
                                         (activity as MainActivity).navController.navigate(
                                             ShowDetailsFragmentDirections.actionShowDetailsToEpisodeDetails(
-                                                it.id
+                                                episode.id
                                             )
                                         )
                                     }
-                                binding.groupEpisodes.isVisible = true
+                                binding.tvEpisodes.isVisible = true
+                                binding.rvEpisodes.isVisible = true
                             }
                             ViewState.Loading -> {
-                                binding.groupEpisodes.isVisible = false
+                                hideEpisodes()
                             }
                             ViewState.Idle -> {}
                         }
@@ -104,8 +120,14 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
+    private fun hideEpisodes() {
+        binding.tvEpisodes.isVisible = false
+        binding.rvEpisodes.isVisible = false
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as MainActivity).hideFab()
         _binding = null
     }
 

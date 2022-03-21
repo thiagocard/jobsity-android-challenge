@@ -1,6 +1,7 @@
 package com.jobsity.android.challenge.ui.shows_search
 
 import androidx.lifecycle.ViewModel
+import com.jobsity.android.challenge.domain.model.ShowsAtList
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
 import com.jobsity.android.challenge.ui.ViewState
 import com.jobsity.android.challenge.ui.resultToViewState
@@ -13,8 +14,15 @@ class ShowsSearchViewModel(
     private val query = MutableStateFlow<String?>(null)
 
     val result = query
-        .filterNotNull()
-        .flatMapMerge { query -> showsRepository.search(query) }
+        .flatMapMerge { query ->
+            query?.let { showsRepository.search(it) } ?: flowOf(
+                Result.success(
+                    ShowsAtList(
+                        emptyList()
+                    )
+                )
+            )
+        }
         .transform { resultToViewState(it) }
         .onStart {
             if (query.value.isNullOrEmpty())

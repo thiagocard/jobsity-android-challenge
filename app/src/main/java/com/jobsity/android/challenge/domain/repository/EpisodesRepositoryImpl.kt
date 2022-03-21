@@ -4,10 +4,7 @@ import com.jobsity.android.challenge.data.model.Episode
 import com.jobsity.android.challenge.data.service.EpisodesService
 import com.jobsity.android.challenge.data.service.ShowsService
 import com.jobsity.android.challenge.domain.mapper.Mapper
-import com.jobsity.android.challenge.domain.model.EpisodeDetails
-import com.jobsity.android.challenge.domain.model.EpisodeOfShow
-import com.jobsity.android.challenge.domain.model.EpisodeOrderedBySeason
-import com.jobsity.android.challenge.domain.model.EpisodesOfShow
+import com.jobsity.android.challenge.domain.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -27,18 +24,9 @@ class EpisodesRepositoryImpl(
     override suspend fun episodes(showId: Int): Flow<Result<EpisodesOfShow>> = flow {
         showsService.getEpisodes(showId)
             .map { episodeOfShowMapper.map(it) }
-            .let { episodes ->
-                val group = episodes.groupBy { it.season }
-                val list = mutableListOf<EpisodeOrderedBySeason>().apply {
-                    group.forEach { entry ->
-                        add(EpisodeOrderedBySeason(episode = null, seasonHeader = entry.key))
-                        entry.value.map { episode ->
-                            add(EpisodeOrderedBySeason(episode = episode, seasonHeader = null))
-                        }
-                    }
-                }.toList()
-                emit(Result.success(EpisodesOfShow(list)))
-            }
+            .groupBy { it.season }
+            .map { entry -> Season(number = entry.key, episodes = entry.value) }
+            .let { emit(Result.success(EpisodesOfShow(it))) }
     }.catch { emit(Result.failure(it)) }
 
 }

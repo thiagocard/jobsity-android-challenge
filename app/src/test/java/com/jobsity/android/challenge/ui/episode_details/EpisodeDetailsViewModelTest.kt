@@ -28,7 +28,8 @@ class EpisodeDetailsViewModelTest : ViewModelTest() {
             1,
             1,
             "Bla bla",
-            "https://url.to/image.png"
+            "https://url.to/image.png",
+            airsAt = ""
         )
         coEvery { episodesRepository.episode(any()) } returns flowOf(
             Result.success(

@@ -13,5 +13,6 @@ class EpisodeDetailsMapperTest {
         val mapped = EpisodeDetailsMapper.map(episode)
         assertEquals(episode.id, mapped.id)
         assertEquals(episode.name, mapped.name)
+        assertEquals("", mapped.airsAt)
     }
 }

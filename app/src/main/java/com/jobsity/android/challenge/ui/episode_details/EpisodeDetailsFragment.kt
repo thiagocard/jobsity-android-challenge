@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.jobsity.android.challenge.BR
 import com.jobsity.android.challenge.MainActivity
+import com.jobsity.android.challenge.R
 import com.jobsity.android.challenge.databinding.FragmentEpisodeDetailsBinding
 import com.jobsity.android.challenge.databinding.FragmentShowDetailsBinding
 import com.jobsity.android.challenge.ui.ViewState
@@ -51,7 +52,7 @@ class EpisodeDetailsFragment : Fragment() {
                                 binding.progressBar.isVisible = false
                                 Snackbar.make(
                                     binding.root,
-                                    state.errorMessage() ?: "Error",
+                                    state.errorMessage() ?: getString(R.string.generic_error),
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }

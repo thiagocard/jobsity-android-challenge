@@ -3,12 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/drawable/bg_genre.xml" value="0.219" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/drawable/bg_season_header.xml" value="0.219" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.117" />
         <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/activity_main.xml" value="0.36268890046899427" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/fragment_episode_details.xml" value="0.3625" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/fragment_favorite_shows.xml" value="0.3625" />
         <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/fragment_show_detail.xml" value="0.14722222222222223" />
         <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/fragment_show_details.xml" value="0.33" />
         <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/fragment_shows.xml" value="0.3625" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/fragment_shows_search.xml" value="0.25" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/item_episode.xml" value="0.33" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/item_episode_season_header.xml" value="0.3625" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/item_season.xml" value="0.3625" />
         <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/layout/item_show_at_list.xml" value="0.3625" />
-        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/menu/menu_app.xml" value="0.3625" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/menu/menu_app.xml" value="0.1" />
+        <entry key="..\:/Users/thiago/dev/jobsity-android-challenge/app/src/main/res/menu/menu_search.xml" value="0.14722222222222223" />
         <entry key="app/src/main/res/drawable/bg_genre.xml" value="0.1915" />
         <entry key="app/src/main/res/font/opensans.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2783203125" />
