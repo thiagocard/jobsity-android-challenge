@@ -1,6 +1,6 @@
 # jobsity-android-challenge
 
-Challenge for Android developer at Jobsity.
+Challenge for Android developer at Jobsity.<br/>
 Using [TvMaze Api](https://www.tvmaze.com/api).
 
 <img src="screenshots/shows.png" width="350" height="584">
@@ -40,6 +40,7 @@ including:
 ---
 
 ### ➕   Extra Features
+
 [x] Allow the user to save a series as a favorite.
 [x] Allow the user to delete a series from the favorites list.
 [x] Allow the user to browse their favorite series in alphabetical order, and click on one to
