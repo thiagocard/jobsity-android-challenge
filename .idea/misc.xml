@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/font/opensans.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14666666666666667" />
         <entry key="app/src/main/res/layout/fragment_episode_details.xml" value="0.3515625" />
+        <entry key="app/src/main/res/layout/fragment_favorite_shows.xml" value="0.3399703979492188" />
         <entry key="app/src/main/res/layout/fragment_show_details.xml" value="0.284698486328125" />
         <entry key="app/src/main/res/layout/fragment_shows.xml" value="0.3515625" />
         <entry key="app/src/main/res/layout/fragment_shows_search.xml" value="0.3515625" />
@@ -21,6 +22,7 @@
         <entry key="app/src/main/res/layout/item_genre.xml" value="1.2148351033528646" />
         <entry key="app/src/main/res/layout/item_show_at_list.xml" value="0.3395314534505208" />
         <entry key="app/src/main/res/menu/menu_app.xml" value="0.3515625" />
+        <entry key="app/src/main/res/menu/menu_fav_show.xml" value="0.1" />
       </map>
     </option>
   </component>

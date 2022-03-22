@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.jobsity.android.challenge.MainActivity
+import com.jobsity.android.challenge.NavigationGraphDirections
 import com.jobsity.android.challenge.databinding.FragmentShowsBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -33,10 +34,12 @@ class ShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val showsAdapter = ShowsPagingDataAdapter { show ->
-            (activity as MainActivity).navController
-                .navigate(ShowsFragmentDirections.actionShowsToShowDetails(show.id))
-        }
+        val showsAdapter = ShowsPagingDataAdapter(
+            onItemClick = { show ->
+                (activity as MainActivity).navController
+                    .navigate(NavigationGraphDirections.actionGlobalShowDetails(show.id))
+            }
+        )
 
         binding.recyclerView.adapter = showsAdapter
 

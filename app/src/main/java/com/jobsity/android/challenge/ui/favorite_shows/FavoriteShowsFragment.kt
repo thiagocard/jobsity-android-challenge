@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
 import com.jobsity.android.challenge.MainActivity
+import com.jobsity.android.challenge.NavigationGraphDirections
 import com.jobsity.android.challenge.R
 import com.jobsity.android.challenge.databinding.FragmentFavoriteShowsBinding
 import com.jobsity.android.challenge.ui.shows.ShowsPagingDataAdapter
@@ -37,15 +40,23 @@ class FavoriteShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as MainActivity).apply {
-            showFab(R.drawable.ic_baseline_sort_by_alpha_24)
-            setFabListener { viewModel.reverseOrder() }
-        }
-
-        val showsAdapter = ShowsPagingDataAdapter { show ->
-            (activity as MainActivity).navController
-                .navigate(FavoriteShowsFragmentDirections.actionShowsToShowDetails(show.id))
-        }
+        val showsAdapter = ShowsPagingDataAdapter(
+            onItemClick = { show ->
+                (activity as MainActivity).navController
+                    .navigate(NavigationGraphDirections.actionGlobalShowDetails(show.id))
+            },
+            onItemMenuClick = { menuView, show ->
+                PopupMenu(requireContext(), menuView)
+                    .apply {
+                        inflate(R.menu.menu_fav_show)
+                        setOnMenuItemClickListener { item ->
+                            if (item.itemId == R.id.action_remove) {
+                                viewModel.removeFromFavorites(show.id)
+                                true
+                            } else false
+                        }
+                    }.show()
+            })
 
         binding.recyclerView.adapter = showsAdapter
 
@@ -54,13 +65,17 @@ class FavoriteShowsFragment : Fragment() {
                 launch {
                     viewModel.favoriteShows.collectLatest { favorites ->
                         if (favorites.isNotEmpty()) {
+                            (activity as MainActivity).apply {
+                                showFab(R.drawable.ic_baseline_sort_by_alpha_24)
+                                setFabListener { viewModel.reverseOrder() }
+                            }
+                            binding.recyclerView.isVisible = true
+                            binding.tvEmpty.isVisible = false
                             showsAdapter.submitData(PagingData.from(favorites))
                         } else {
-                            Snackbar.make(
-                                (activity as MainActivity).binding.coordinatorLayout,
-                                R.string.no_shows_found,
-                                Snackbar.LENGTH_LONG
-                            ).show()
+                            (activity as MainActivity).hideFab()
+                            binding.recyclerView.isVisible = false
+                            binding.tvEmpty.isVisible = true
                         }
                     }
                 }
