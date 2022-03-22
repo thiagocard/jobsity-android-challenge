@@ -4,14 +4,14 @@ Challenge for Android developer at Jobsity.
 
 <img src="screenshots/shows.png" width="350" height="584">
 
-### 🛠 Tech and skills applied
+### 🛠   Tech and skills applied
 - Kotlin
 - Android Jetpack libraries
 - Unit and instrumented (persistence) tests
 - Data binding
 - MVVM (w/ dependency injection)
 
-### 📱Mandatory features
+### 📱   Mandatory features
 
 [x] List all of the series contained in the API used by the paging scheme provided by the
 API.
@@ -38,7 +38,7 @@ including:
 
 ---
 
-### ➕ Extra Features
+### ➕   Extra Features
 [x] Allow the user to save a series as a favorite.
 [x]Allow the user to delete a series from the favorites list.
 [x] Allow the user to browse their favorite series in alphabetical order, and click on one to
