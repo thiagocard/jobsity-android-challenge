@@ -1,7 +1,8 @@
 # jobsity-android-challenge
 
 Challenge for Android developer at Jobsity.<br/>
-Using [TvMaze Api](https://www.tvmaze.com/api).
+Using [TvMaze Api](https://www.tvmaze.com/api).<br/>
+APK file located into `dist` folder.
 
 <img src="screenshots/shows.png" width="350" height="584">
 
