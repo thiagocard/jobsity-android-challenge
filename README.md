@@ -5,12 +5,16 @@ Using [TvMaze Api](https://www.tvmaze.com/api).
 
 <img src="screenshots/shows.png" width="350" height="584">
 
+---
+
 ### 🛠   Tech and skills applied
 - Kotlin
 - Android Jetpack libraries
 - Unit and instrumented (persistence) tests
 - Data binding
 - MVVM (w/ dependency injection)
+
+---
 
 ### 📱   Mandatory features
 
