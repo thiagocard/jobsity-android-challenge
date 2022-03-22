@@ -2,7 +2,7 @@
 
 Challenge for Android developer at Jobsity.
 
-![App screenshot](screenshots/shows.png)
+<img src="screenshots/shows.png" width="350" height="584">
 
 ### 🛠 Tech and skills applied
 - Kotlin
