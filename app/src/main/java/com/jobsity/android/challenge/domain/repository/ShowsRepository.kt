@@ -4,8 +4,7 @@ import androidx.paging.PagingData
 import com.jobsity.android.challenge.domain.model.ShowAtList
 import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.domain.model.ShowsAtList
-import com.jobsity.android.challenge.domain.paging.ShowsPagingSource
-import com.jobsity.android.challenge.persistence.entity.FavoriteShow
+import com.jobsity.android.challenge.domain.model.SortOrder
 import kotlinx.coroutines.flow.Flow
 
 interface ShowsRepository {
@@ -20,7 +19,7 @@ interface ShowsRepository {
 
     suspend fun removeFromFavorites(id: Int): Result<Unit>
 
-    fun allFavorites(): Flow<Result<ShowsAtList>>
+    fun allFavorites(sortOrder: SortOrder = SortOrder.ASC): Flow<Result<ShowsAtList>>
 
     fun isFavorite(id: Int): Flow<Boolean>
 

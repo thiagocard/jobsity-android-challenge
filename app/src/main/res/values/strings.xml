@@ -17,4 +17,7 @@
     <string name="generic_error">Error</string>
     <string name="add_to_favorites">Add to favorites</string>
     <string name="favorite_shows">Favorite shows</string>
+    <string name="menu">menu</string>
+    <string name="remove">Remove</string>
+    <string name="msg_no_fav_shows">You don\'t have any show on your favorites :(</string>
 </resources>

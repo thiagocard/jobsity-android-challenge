@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
 import com.jobsity.android.challenge.MainActivity
+import com.jobsity.android.challenge.NavigationGraphDirections
 import com.jobsity.android.challenge.R
 import com.jobsity.android.challenge.databinding.FragmentShowsSearchBinding
 import com.jobsity.android.challenge.ui.ViewState
@@ -67,10 +68,12 @@ class ShowsSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val showsAdapter = ShowsPagingDataAdapter { show ->
-            (activity as MainActivity).navController
-                .navigate(R.id.show_details, bundleOf("show_id" to show.id))
-        }
+        val showsAdapter = ShowsPagingDataAdapter(
+            onItemClick = { show ->
+                (activity as MainActivity).navController
+                    .navigate(R.id.show_details, bundleOf("show_id" to show.id))
+            }
+        )
 
         binding.recyclerView.adapter = showsAdapter
 
@@ -90,14 +93,15 @@ class ShowsSearchFragment : Fragment() {
                             is ViewState.Loaded -> {
                                 stopLoading()
                                 if (state.data.shows.isNotEmpty()) {
-                                    val adapter = ShowsPagingDataAdapter() { show ->
-                                        (activity as MainActivity).navController
-                                            .navigate(
-                                                ShowsSearchFragmentDirections.actionShowsSearchToShowDetails(
-                                                    show.id
+                                    val adapter = ShowsPagingDataAdapter(
+                                        onItemClick = { show ->
+                                            (activity as MainActivity).navController
+                                                .navigate(
+                                                    NavigationGraphDirections.actionGlobalShowDetails(
+                                                        show.id)
                                                 )
-                                            )
-                                    }
+                                        }
+                                    )
                                     binding.recyclerView.adapter = adapter
                                     adapter.submitData(PagingData.from(state.data.shows))
                                 } else {

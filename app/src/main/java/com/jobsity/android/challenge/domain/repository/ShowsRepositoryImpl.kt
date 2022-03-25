@@ -10,6 +10,7 @@ import com.jobsity.android.challenge.domain.mapper.Mapper
 import com.jobsity.android.challenge.domain.model.ShowAtList
 import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.domain.model.ShowsAtList
+import com.jobsity.android.challenge.domain.model.SortOrder
 import com.jobsity.android.challenge.domain.paging.ShowsPagingSource
 import com.jobsity.android.challenge.persistence.dao.FavoriteShowDao
 import com.jobsity.android.challenge.persistence.entity.FavoriteShow
@@ -33,12 +34,13 @@ class ShowsRepositoryImpl(
         PagingConfig(pageSize = 250)
     ) { showsPagingSource }.flow
 
-    override fun search(query: String): Flow<Result<ShowsAtList>> = flow<Result<ShowsAtList>> {
-        val shows = searchService.searchShows(query)
-            .map { showAtListMapper.map(it.show) }
-            .let { ShowsAtList(it) }
-        emit(Result.success(shows))
-    }.catch { emit(Result.failure(it)) }
+    override suspend fun search(query: String): Flow<Result<ShowsAtList>> =
+        flow<Result<ShowsAtList>> {
+            val shows = searchService.searchShows(query)
+                .map { showAtListMapper.map(it.show) }
+                .let { ShowsAtList(it) }
+            emit(Result.success(shows))
+        }.catch { emit(Result.failure(it)) }
 
     override fun show(id: Int): Flow<Result<ShowDetails>> = flow {
         emit(
@@ -65,11 +67,19 @@ class ShowsRepositoryImpl(
         return mapToResult(favoriteShowDao.delete(id))
     }
 
-    override fun allFavorites(): Flow<Result<ShowsAtList>> {
+    override fun allFavorites(sortOrder: SortOrder): Flow<Result<ShowsAtList>> {
         return favoriteShowDao.findAll()
             .map { list ->
-                val shows = ShowsAtList(list.map { favShowToShowAtListMapper.map(it) })
-                Result.success(shows)
+                val shows = list
+                    .map { favShowToShowAtListMapper.map(it) }
+                    .let {
+                        when(sortOrder) {
+                            SortOrder.ASC -> it.sortedBy { it.name }
+                            SortOrder.DESC -> it.sortedByDescending { it.name }
+                        }
+                    }
+                val showsAtList = ShowsAtList(shows)
+                Result.success(showsAtList)
             }.catch { emit(Result.failure(it)) }
     }
 
