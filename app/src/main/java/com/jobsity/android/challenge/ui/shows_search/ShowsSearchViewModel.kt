@@ -16,11 +16,7 @@ class ShowsSearchViewModel(
     val result = query
         .flatMapMerge { query ->
             query?.let { showsRepository.search(it) } ?: flowOf(
-                Result.success(
-                    ShowsAtList(
-                        emptyList()
-                    )
-                )
+                Result.success(ShowsAtList(emptyList()))
             )
         }
         .transform { resultToViewState(it) }

@@ -1,5 +1,8 @@
 package com.jobsity.android.challenge.domain.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.jobsity.android.challenge.data.model.Show
 import com.jobsity.android.challenge.data.service.SearchService
 import com.jobsity.android.challenge.data.service.ShowsService
@@ -26,18 +29,18 @@ class ShowsRepositoryImpl(
     private val favShowToShowAtListMapper: Mapper<FavoriteShow, ShowAtList>,
 ) : ShowsRepository {
 
-    override fun shows(): Result<ShowsPagingSource> = kotlin.runCatching {
-        showsPagingSource
-    }
+    override fun shows(): Flow<PagingData<ShowAtList>> = Pager(
+        PagingConfig(pageSize = 250)
+    ) { showsPagingSource }.flow
 
-    override suspend fun search(query: String): Flow<Result<ShowsAtList>> = flow<Result<ShowsAtList>> {
+    override fun search(query: String): Flow<Result<ShowsAtList>> = flow<Result<ShowsAtList>> {
         val shows = searchService.searchShows(query)
             .map { showAtListMapper.map(it.show) }
             .let { ShowsAtList(it) }
         emit(Result.success(shows))
     }.catch { emit(Result.failure(it)) }
 
-    override suspend fun show(id: Int): Flow<Result<ShowDetails>> = flow {
+    override fun show(id: Int): Flow<Result<ShowDetails>> = flow {
         emit(
             Result.success(
                 showsService.getShow(id).let {
@@ -47,21 +50,31 @@ class ShowsRepositoryImpl(
         )
     }.catch { emit(Result.failure(it)) }
 
-    override suspend fun addToFavorites(showAtList: ShowAtList): Long {
-        return favoriteShowDao.insert(favoriteShowMapper.map(showAtList))
+    private fun mapToResult(n: Comparable<Int>) =
+        if (n > 0) Result.success(Unit) else Result.failure(IllegalStateException())
+
+    @JvmName("mapLongToResult")
+    private fun mapToResult(n: Comparable<Long>) =
+        if (n > 0) Result.success(Unit) else Result.failure(IllegalStateException())
+
+    override suspend fun addToFavorites(showAtList: ShowAtList): Result<Unit> {
+        return mapToResult(favoriteShowDao.insert(favoriteShowMapper.map(showAtList)))
     }
 
-    override suspend fun removeFromFavorites(id: Int): Int {
-        return favoriteShowDao.delete(id)
+    override suspend fun removeFromFavorites(id: Int): Result<Unit> {
+        return mapToResult(favoriteShowDao.delete(id))
     }
 
-    override suspend fun allFavorites(): Flow<List<ShowAtList>> {
+    override fun allFavorites(): Flow<Result<ShowsAtList>> {
         return favoriteShowDao.findAll()
-            .map { list -> list.map { favShowToShowAtListMapper.map(it) } }
+            .map { list ->
+                val shows = ShowsAtList(list.map { favShowToShowAtListMapper.map(it) })
+                Result.success(shows)
+            }.catch { emit(Result.failure(it)) }
     }
 
-    override suspend fun isFavorite(id: Int): Flow<Boolean?> {
-        return favoriteShowDao.exists(id)
+    override fun isFavorite(id: Int): Flow<Boolean> {
+        return favoriteShowDao.exists(id).map { it == true }
     }
 
 }

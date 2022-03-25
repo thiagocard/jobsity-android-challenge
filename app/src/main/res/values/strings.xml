@@ -11,6 +11,7 @@
     <string name="genres">Genres</string>
     <string name="episode_screenshot">episode screenshot</string>
     <string name="no_shows_found">No shows found</string>
+    <string name="no_favorites_found">No favorite shows found</string>
     <string name="airs_at">Airs at %</string>
     <string name="failed_to_fetch_episodes">Failed to fetch episodes of show</string>
     <string name="generic_error">Error</string>

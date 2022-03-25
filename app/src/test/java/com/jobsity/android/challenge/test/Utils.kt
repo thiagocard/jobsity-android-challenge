@@ -23,10 +23,9 @@ val sampleShowDetails = ShowDetails(
 )
 
 /**
- * Read json file from path and help to build defined structures.
+ * Read json file from path and help to build data from the given type.
  */
-fun readJson(context: Any, path: String) =
-    File(context.javaClass.classLoader?.getResource(path)!!.file).readText()
-
 inline fun <reified T> fromJson(context: Any, path: String) =
-    json.decodeFromString<T>(readJson(context, path))
+    json.decodeFromString<T>(
+        File(context.javaClass.classLoader?.getResource(path)!!.file).readText()
+    )

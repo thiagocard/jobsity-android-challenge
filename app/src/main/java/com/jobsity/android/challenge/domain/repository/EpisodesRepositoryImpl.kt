@@ -16,12 +16,12 @@ class EpisodesRepositoryImpl(
     private val episodeOfShowMapper: Mapper<Episode, EpisodeOfShow>
 ) : EpisodesRepository {
 
-    override suspend fun episode(id: Int): Flow<Result<EpisodeDetails>> = flow {
+    override fun episode(id: Int): Flow<Result<EpisodeDetails>> = flow {
         val episodes = episodesService.getEpisode(id).let { episodeDetailsMapper.map(it) }
         emit(Result.success(episodes))
     }.catch { emit(Result.failure(it)) }
 
-    override suspend fun episodes(showId: Int): Flow<Result<EpisodesOfShow>> = flow {
+    override fun episodes(showId: Int): Flow<Result<EpisodesOfShow>> = flow {
         showsService.getEpisodes(showId)
             .map { episodeOfShowMapper.map(it) }
             .groupBy { it.season }

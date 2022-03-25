@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface EpisodesRepository {
 
-    suspend fun episode(id: Int): Flow<Result<EpisodeDetails>>
+    fun episode(id: Int): Flow<Result<EpisodeDetails>>
 
-    suspend fun episodes(showId: Int): Flow<Result<EpisodesOfShow>>
+    fun episodes(showId: Int): Flow<Result<EpisodesOfShow>>
 
 }

@@ -22,7 +22,7 @@ class ShowsSearchViewModelTest : ViewModelTest() {
     private val vm by lazy { ShowsSearchViewModel(showsRepository) }
 
     @Test
-    fun `should get search resuls with success`() = runTest {
+    fun `should get search results with success`() = runTest {
         val shows = listOf<ShowAtList>()
         coEvery { showsRepository.search(any()) } returns flowOf(Result.success(ShowsAtList(shows = shows)))
 

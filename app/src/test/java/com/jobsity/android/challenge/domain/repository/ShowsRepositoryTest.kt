@@ -10,7 +10,7 @@ import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.domain.paging.ShowsPagingSource
 import com.jobsity.android.challenge.persistence.dao.FavoriteShowDao
 import com.jobsity.android.challenge.persistence.entity.FavoriteShow
-import com.jobsity.android.challenge.test.fromJson
+import com.jobsity.android.challenge.test.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,47 +27,10 @@ class ShowsRepositoryTest {
     private val showsService = mockk<ShowsService>()
     private val searchService = mockk<SearchService>()
     private val favoriteShowDao = mockk<FavoriteShowDao>()
-    private val showAtListMapper = object : Mapper<Show, ShowAtList> {
-        override fun map(input: Show) = ShowAtList(
-            id = input.id,
-            name = input.name,
-            poster = input.image?.original ?: "",
-            status = "Continuing",
-            year = 2022
-        )
+
+    private val showsPagingSource by lazy {
+        ShowsPagingSource(showsService, showAtListMapper)
     }
-    private val showDetailsMapper = object : Mapper<Show, ShowDetails> {
-        override fun map(input: Show) = ShowDetails(
-            id = input.id,
-            name = input.name,
-            poster = input.image?.original ?: "",
-            airsAt = "Airs at some date",
-            genres = input.genres,
-            summary = input.summary ?: "N/A",
-            rating = 10.0,
-            status = input.status,
-            year = 2022
-        )
-    }
-    private val favoriteShowMapper = object : Mapper<ShowAtList, FavoriteShow> {
-        override fun map(input: ShowAtList) = FavoriteShow(
-            id = input.id,
-            name = input.name,
-            poster = input.poster,
-            status = input.status,
-            year = input.year,
-        )
-    }
-    private val favShowToShowAtListMapper = object : Mapper<FavoriteShow, ShowAtList> {
-        override fun map(input: FavoriteShow) = ShowAtList(
-            id = input.id,
-            name = input.name,
-            poster = input.poster,
-            status = input.status,
-            year = input.year,
-        )
-    }
-    private val showsPagingSource by lazy { ShowsPagingSource(showsService, showAtListMapper) }
 
     private val repo by lazy {
         ShowsRepositoryImpl(
@@ -81,27 +44,6 @@ class ShowsRepositoryTest {
             favShowToShowAtListMapper = favShowToShowAtListMapper,
         )
     }
-
-//    @Test
-//    fun `should get shows with success`() = runTest {
-//        val expected = fromJson<List<Show>>(this, "get_shows.json")
-//        coEvery { showsService.getShows(any()) } returns expected
-//
-//        assertEquals(
-//            expected = PagingSource.LoadResult.Page(
-//                data = expected,
-//                prevKey = null,
-//                nextKey = 2
-//            ),
-//            actual = showsPagingSource.load(
-//                PagingSource.LoadParams.Refresh(
-//                    key = null,
-//                    loadSize = 2,
-//                    placeholdersEnabled = false
-//                )
-//            )
-//        )
-//    }
 
     @Test
     fun `should search shows with success`() = runTest {
@@ -136,7 +78,7 @@ class ShowsRepositoryTest {
 
         val result =
             repo.addToFavorites(ShowAtList(id = 1, name = "", poster = "", status = "", year = 1))
-        assertEquals(1, result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -144,7 +86,7 @@ class ShowsRepositoryTest {
         coEvery { favoriteShowDao.delete(any()) } returns 1
 
         val result = repo.removeFromFavorites(1)
-        assertEquals(1, result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -152,7 +94,7 @@ class ShowsRepositoryTest {
         coEvery { favoriteShowDao.findAll() } returns flowOf(listOf())
 
         val result = repo.allFavorites().single()
-        assertEquals(listOf(), result)
+        assertEquals(listOf(), result.getOrNull()?.shows)
     }
 
     @Test

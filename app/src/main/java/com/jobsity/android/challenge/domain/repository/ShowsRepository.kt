@@ -1,5 +1,6 @@
 package com.jobsity.android.challenge.domain.repository
 
+import androidx.paging.PagingData
 import com.jobsity.android.challenge.domain.model.ShowAtList
 import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.domain.model.ShowsAtList
@@ -9,18 +10,18 @@ import kotlinx.coroutines.flow.Flow
 
 interface ShowsRepository {
 
-    fun shows(): Result<ShowsPagingSource>
+    fun shows(): Flow<PagingData<ShowAtList>>
 
-    suspend fun search(query: String): Flow<Result<ShowsAtList>>
+    fun search(query: String): Flow<Result<ShowsAtList>>
 
-    suspend fun show(id: Int): Flow<Result<ShowDetails>>
+    fun show(id: Int): Flow<Result<ShowDetails>>
 
-    suspend fun addToFavorites(showAtList: ShowAtList): Long
+    suspend fun addToFavorites(showAtList: ShowAtList): Result<Unit>
 
-    suspend fun removeFromFavorites(id: Int): Int
+    suspend fun removeFromFavorites(id: Int): Result<Unit>
 
-    suspend fun allFavorites(): Flow<List<ShowAtList>>
+    fun allFavorites(): Flow<Result<ShowsAtList>>
 
-    suspend fun isFavorite(id: Int): Flow<Boolean?>
+    fun isFavorite(id: Int): Flow<Boolean>
 
 }
