@@ -8,41 +8,48 @@
             type="Integer" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/half_margin"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
+        android:layout_marginVertical="@dimen/quarter_margin"
+        app:cardCornerRadius="4dp"
+        app:cardUseCompatPadding="true">
 
-        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/tv_season"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:paddingVertical="@dimen/quarter_margin"
-            android:text="@{`Season #` + season}"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="S01E01 · Pilot" />
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/bg_light_gray" />
+            <TextView
+                android:id="@+id/tv_season"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:paddingVertical="@dimen/half_margin"
+                android:paddingHorizontal="@dimen/half_margin"
+                android:text="@{`Season #` + season}"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="S01E01 · Pilot" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_season_episodes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_episode"
-            tools:visibility="visible" />
-    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/bg_light_gray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_season_episodes"
+                android:paddingHorizontal="@dimen/half_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_episode"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </layout>
