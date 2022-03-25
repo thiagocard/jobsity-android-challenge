@@ -7,14 +7,16 @@ import com.jobsity.android.challenge.domain.model.ShowsAtList
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
 import com.jobsity.android.challenge.ui.ViewState
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class FavoriteShowsViewModel(
-    showsRepository: ShowsRepository
+    private val showsRepository: ShowsRepository
 ) : ViewModel() {
 
     private val order = MutableStateFlow(SortOrder.ASC)
 
-    val favorites: Flow<ViewState<ShowsAtList>> = showsRepository.allFavorites()
+    val favorites: Flow<ViewState<ShowsAtList>> = order
+        .flatMapMerge { order -> showsRepository.allFavorites(order) }
         .transform {
             if (it.isSuccess)
                 emit(ViewState.Loaded(it.getOrThrow()))

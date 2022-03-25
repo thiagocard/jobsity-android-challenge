@@ -18,8 +18,6 @@ import com.jobsity.android.challenge.R
 import com.jobsity.android.challenge.databinding.FragmentFavoriteShowsBinding
 import com.jobsity.android.challenge.domain.model.ShowsAtList
 import com.jobsity.android.challenge.ui.ViewState
-import com.jobsity.android.challenge.domain.model.ShowsAtList
-import com.jobsity.android.challenge.ui.ViewState
 import com.jobsity.android.challenge.ui.shows.ShowsPagingDataAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -77,10 +75,12 @@ class FavoriteShowsFragment : Fragment() {
         binding.progressBar.isVisible = false
         val shows = state.dataOrThrow().shows
         if (shows.isNotEmpty()) {
-            val showsAdapter = ShowsPagingDataAdapter { show ->
-                (activity as MainActivity).navController
-                    .navigate(FavoriteShowsFragmentDirections.actionShowsToShowDetails(show.id))
-            }
+            val showsAdapter = ShowsPagingDataAdapter(
+                onItemClick = { show ->
+                    (activity as MainActivity).navController
+                        .navigate(NavigationGraphDirections.actionGlobalShowDetails(show.id))
+                }
+            )
             binding.recyclerView.adapter = showsAdapter
             showsAdapter.submitData(PagingData.from(shows))
         } else {

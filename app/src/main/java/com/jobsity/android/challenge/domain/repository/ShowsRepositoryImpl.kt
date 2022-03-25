@@ -34,7 +34,7 @@ class ShowsRepositoryImpl(
         PagingConfig(pageSize = 250)
     ) { showsPagingSource }.flow
 
-    override suspend fun search(query: String): Flow<Result<ShowsAtList>> =
+    override fun search(query: String): Flow<Result<ShowsAtList>> =
         flow<Result<ShowsAtList>> {
             val shows = searchService.searchShows(query)
                 .map { showAtListMapper.map(it.show) }

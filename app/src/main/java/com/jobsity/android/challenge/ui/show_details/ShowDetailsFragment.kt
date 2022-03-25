@@ -72,6 +72,7 @@ class ShowDetailsFragment : Fragment() {
                                 binding.progressBar.isVisible = true
                                 binding.constraintLayout.isVisible = false
                             }
+                            ViewState.Idle -> {}
                         }
                     }
                 }
@@ -79,7 +80,7 @@ class ShowDetailsFragment : Fragment() {
                 launch {
                     viewModel. isFavorite.collectLatest { isFavorite ->
                         (activity as MainActivity).changeFabIcon(
-                            if (isFavorite == true) R.drawable.ic_baseline_favorite_24
+                            if (isFavorite) R.drawable.ic_baseline_favorite_24
                             else R.drawable.ic_baseline_favorite_border_24
                         )
                     }
