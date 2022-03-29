@@ -36,11 +36,11 @@ the following information:
 
 ✅ After clicking on an episode, the application should show the episode’s information,
 including:
-- Name
-- Number
-- Season
-- Summary
-- Image, if there is one
+- Name;
+- Number;
+- Season;
+- Summary;
+- Image, if there is one.
 
 ---
 
