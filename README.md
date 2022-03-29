@@ -2,7 +2,7 @@
 
 Challenge for Android developer at Jobsity.<br/>
 Using [TvMaze Api](https://www.tvmaze.com/api).<br/>
-APK file located into `dist` folder.
+APK file located into `dist` folder (as requested).
 
 <img src="screenshots/shows.png" width="350" height="584">
 
@@ -10,10 +10,11 @@ APK file located into `dist` folder.
 
 ### 🛠   Tech and skills applied
 - Kotlin
+- Coroutines
 - Android Jetpack libraries
 - Unit and instrumented (persistence) tests
 - Data binding
-- MVVM (w/ dependency injection)
+- MVVM (w/ Clean principles)
 
 ---
 
