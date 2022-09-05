@@ -28,11 +28,12 @@
 
                 <TextView
                     android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{episode.fullName()}"
                     android:textSize="17sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="@id/guideline_top"
                     tools:text="S01E01 · The Winter is Coming" />

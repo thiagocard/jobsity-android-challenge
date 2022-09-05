@@ -9,5 +9,6 @@ data class EpisodeDetails(
     val image: String,
     val airsAt: String
 ) {
-    fun fullName() = "S${String.format("%02d", season)}E${String.format("%02d", number)} · $name"
+    fun seasonAndEpisode() = "S${String.format("%02d", season)}E${String.format("%02d", number)}"
+    fun fullName() = "${seasonAndEpisode()} · $name"
 }

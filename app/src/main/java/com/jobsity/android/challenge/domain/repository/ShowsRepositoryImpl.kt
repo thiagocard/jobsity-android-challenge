@@ -35,7 +35,7 @@ class ShowsRepositoryImpl(
     ) { showsPagingSource }.flow
 
     override fun search(query: String): Flow<Result<ShowsAtList>> =
-        flow<Result<ShowsAtList>> {
+        flow {
             val shows = searchService.searchShows(query)
                 .map { showAtListMapper.map(it.show) }
                 .let { ShowsAtList(it) }

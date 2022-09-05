@@ -57,7 +57,7 @@ class EpisodeDetailsFragment : Fragment() {
                                 ).show()
                             }
                             is ViewState.Loaded -> {
-                                (activity as MainActivity).binding.toolbar.subtitle = state.data.name
+                                (activity as MainActivity).binding.toolbar.subtitle = state.data.seasonAndEpisode()
                                 binding.progressBar.isVisible = false
                                 binding.constraintLayout.isVisible = true
                                 binding.setVariable(BR.episode, state.data)

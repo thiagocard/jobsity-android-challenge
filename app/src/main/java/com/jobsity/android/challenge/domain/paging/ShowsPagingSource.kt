@@ -6,6 +6,7 @@ import com.jobsity.android.challenge.data.model.Show
 import com.jobsity.android.challenge.data.service.ShowsService
 import com.jobsity.android.challenge.domain.mapper.Mapper
 import com.jobsity.android.challenge.domain.model.ShowAtList
+import timber.log.Timber
 
 class ShowsPagingSource(
     private val showsService: ShowsService,
@@ -25,6 +26,7 @@ class ShowsPagingSource(
         } catch (e: Exception) {
             // Handle errors in this block and return LoadResult.Error if it is an
             // expected error (such as a network failure).
+            Timber.e(e)
             LoadResult.Error(e)
         }
     }

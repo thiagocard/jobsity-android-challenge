@@ -27,9 +27,7 @@ class ShowDetailsViewModel(
     val show = if (state.contains(KEY_SHOW)) {
         state.getLiveData<Result<ShowDetails>>(KEY_SHOW)
             .asFlow()
-            .transform {
-                resultToViewState(it)
-            }
+            .transform { resultToViewState(it) }
     } else {
         showId
             .filterNotNull()
@@ -37,7 +35,7 @@ class ShowDetailsViewModel(
             .flatMapMerge { id -> showsRepository.show(id) }
             .transform {
                 _show = it.getOrNull()
-                state.set(KEY_SHOW, it)
+                state[KEY_SHOW] = it
                 resultToViewState(it)
             }
     }.onStart { emit(ViewState.Loading) }
@@ -51,7 +49,7 @@ class ShowDetailsViewModel(
         .distinctUntilChanged()
         .flatMapMerge { id -> episodesRepository.episodes(id) }
         .transform {
-            state.set(KEY_EPISODES, it)
+            state[KEY_EPISODES] = it
             resultToViewState(it)
         }
         .onStart { emit(ViewState.Loading) }
@@ -68,7 +66,7 @@ class ShowDetailsViewModel(
     fun addOrRemoveToFavorites() {
         viewModelScope.launch {
             showId.value?.let { id ->
-                if (isFavorite.first() == true) {
+                if (isFavorite.first()) {
                     showsRepository.removeFromFavorites(id)
                 } else {
                     _show?.let {
