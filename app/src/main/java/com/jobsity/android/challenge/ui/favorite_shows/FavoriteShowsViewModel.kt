@@ -6,10 +6,13 @@ import com.jobsity.android.challenge.domain.model.SortOrder
 import com.jobsity.android.challenge.domain.model.ShowsAtList
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
 import com.jobsity.android.challenge.ui.ViewState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FavoriteShowsViewModel(
+@HiltViewModel
+class FavoriteShowsViewModel @Inject constructor(
     private val showsRepository: ShowsRepository
 ) : ViewModel() {
 

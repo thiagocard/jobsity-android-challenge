@@ -18,8 +18,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class ShowsRepositoryImpl(
+class ShowsRepositoryImpl @Inject constructor(
     private val showsService: ShowsService,
     private val searchService: SearchService,
     private val showsPagingSource: ShowsPagingSource,

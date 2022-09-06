@@ -4,12 +4,16 @@ import com.jobsity.android.challenge.data.model.Episode
 import com.jobsity.android.challenge.data.service.EpisodesService
 import com.jobsity.android.challenge.data.service.ShowsService
 import com.jobsity.android.challenge.domain.mapper.Mapper
-import com.jobsity.android.challenge.domain.model.*
+import com.jobsity.android.challenge.domain.model.EpisodeDetails
+import com.jobsity.android.challenge.domain.model.EpisodeOfShow
+import com.jobsity.android.challenge.domain.model.EpisodesOfShow
+import com.jobsity.android.challenge.domain.model.Season
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class EpisodesRepositoryImpl(
+class EpisodesRepositoryImpl @Inject constructor(
     private val episodesService: EpisodesService,
     private val showsService: ShowsService,
     private val episodeDetailsMapper: Mapper<Episode, EpisodeDetails>,

@@ -1,6 +1,5 @@
 package com.jobsity.android.challenge.ui.show_details
 
-import androidx.lifecycle.SavedStateHandle
 import com.jobsity.android.challenge.domain.model.EpisodesOfShow
 import com.jobsity.android.challenge.domain.repository.EpisodesRepository
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
@@ -25,7 +24,6 @@ class ShowDetailsViewModelTest : ViewModelTest() {
     private val episodesRepository = mockk<EpisodesRepository>()
     private val viewModel by lazy {
         ShowDetailsViewModel(
-            SavedStateHandle(),
             showsRepository,
             episodesRepository
         )

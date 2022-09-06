@@ -11,4 +11,5 @@ data class ShowDetails(
     val rating: Double,
     val status: String,
     val year: Int,
+    val runtime: Int?,
 )

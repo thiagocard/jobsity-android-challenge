@@ -4,8 +4,9 @@ import com.jobsity.android.challenge.data.model.Episode
 import com.jobsity.android.challenge.domain.model.EpisodeDetails
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
+import javax.inject.Inject
 
-object EpisodeDetailsMapper : Mapper<Episode, EpisodeDetails> {
+class EpisodeDetailsMapper @Inject constructor() : Mapper<Episode, EpisodeDetails> {
 
     override fun map(input: Episode) = EpisodeDetails(
         id = input.id,

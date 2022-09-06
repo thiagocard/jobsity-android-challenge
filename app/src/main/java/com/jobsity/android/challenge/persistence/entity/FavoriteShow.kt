@@ -10,4 +10,6 @@ data class FavoriteShow(
     val poster: String,
     val status: String,
     val year: Int,
+    val overview: String?,
+    val runtime: Int?,
 )

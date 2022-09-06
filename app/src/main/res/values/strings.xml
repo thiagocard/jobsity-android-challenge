@@ -20,4 +20,7 @@
     <string name="menu">menu</string>
     <string name="remove">Remove</string>
     <string name="msg_no_fav_shows">You don\'t have any show on your favorites :(</string>
+    <string name="show_added_to_favorites">%s added to your favorites</string>
+    <string name="show_removed_from_favorites">%s removed from your favorites</string>
+    <string name="runtime">Runtime: %s</string>
 </resources>

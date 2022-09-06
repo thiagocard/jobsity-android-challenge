@@ -11,10 +11,13 @@ import com.jobsity.android.challenge.domain.repository.EpisodesRepository
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
 import com.jobsity.android.challenge.ui.ViewState
 import com.jobsity.android.challenge.ui.resultToViewState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ShowDetailsViewModel(
+@HiltViewModel
+class ShowDetailsViewModel @Inject constructor(
     private val state: SavedStateHandle,
     private val showsRepository: ShowsRepository,
     private val episodesRepository: EpisodesRepository
@@ -76,7 +79,9 @@ class ShowDetailsViewModel(
                                 name = it.name,
                                 poster = it.poster,
                                 status = it.status,
-                                year = it.year
+                                year = it.year,
+                                overview = it.summary,
+                                runtime = it.runtime
                             )
                         )
                     }

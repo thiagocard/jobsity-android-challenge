@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "db4afa0ea40cb0847ef9663cf38b64bf",
+    "identityHash": "030ba40bb764e2ca44cd693f837e8b6f",
     "entities": [
       {
         "tableName": "favorite_shows",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `poster` TEXT NOT NULL, `status` TEXT NOT NULL, `year` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `poster` TEXT NOT NULL, `status` TEXT NOT NULL, `year` INTEGER NOT NULL, `overview` TEXT, `runtime` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -37,6 +37,18 @@
             "columnName": "year",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "overview",
+            "columnName": "overview",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "runtime",
+            "columnName": "runtime",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -52,7 +64,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'db4afa0ea40cb0847ef9663cf38b64bf')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '030ba40bb764e2ca44cd693f837e8b6f')"
     ]
   }
 }

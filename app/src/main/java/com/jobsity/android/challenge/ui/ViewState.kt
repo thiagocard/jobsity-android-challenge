@@ -13,4 +13,5 @@ sealed class ViewState<out T> {
     fun dataOrThrow() =
         if (this is Loaded) this.data else (this as? Error)?.throwable?.let { throw it }
             ?: throw IllegalStateException("ViewState couldn't either get data nor error exception")
+    fun dataOrNull() = if (this is Loaded) this.data else null
 }

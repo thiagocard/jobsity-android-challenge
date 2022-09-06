@@ -1,18 +1,7 @@
 package com.jobsity.android.challenge
 
 import android.app.Application
-import appModules
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import dagger.hilt.android.HiltAndroidApp
 
-class ShowsApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        startKoin {
-            androidContext(this@ShowsApplication)
-            modules(appModules)
-        }
-    }
-
-}
+@HiltAndroidApp
+class ShowsApplication : Application()

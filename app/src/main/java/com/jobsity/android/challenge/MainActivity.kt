@@ -1,54 +1,90 @@
 package com.jobsity.android.challenge
 
 import android.os.Bundle
-import android.view.animation.AnimationUtils
-import androidx.annotation.DrawableRes
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.jobsity.android.challenge.databinding.ActivityMainBinding
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
+import com.jobsity.android.challenge.ui.AppNavigator
+import com.jobsity.android.challenge.ui.Screen
+import com.jobsity.android.challenge.ui.ScreenParams
+import com.jobsity.android.challenge.ui.favorite_shows.Favorites
+import com.jobsity.android.challenge.ui.show_details.ShowDetail
+import com.jobsity.android.challenge.ui.shows.Shows
+import com.jobsity.android.challenge.ui.theme.AppTheme
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
+
+@OptIn(ExperimentalMaterialNavigationApi::class)
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    lateinit var binding: ActivityMainBinding
-
-    val navController: NavController
-        get() = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        binding.toolbar.setupWithNavController(navController)
-        setSupportActionBar(binding.toolbar)
+        setContent {
+            val bottomSheetNavigator = rememberBottomSheetNavigator()
+            val navController = rememberNavController(bottomSheetNavigator)
 
-        binding.bottomNavView.setupWithNavController(navController)
-    }
-
-    fun showFab(@DrawableRes iconRes: Int? = null) {
-        binding.fab.apply {
-            startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.scale_up))
-            isVisible = true
-        }
-        changeFabIcon(iconRes)
-    }
-
-    fun changeFabIcon(@DrawableRes iconRes: Int? = null) {
-        iconRes?.let(binding.fab::setImageResource)
-    }
-
-    fun hideFab() {
-        binding.fab.apply {
-            startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.scale_down))
-            isVisible = false
+            AppTheme {
+                ModalBottomSheetLayout(
+                    bottomSheetNavigator = bottomSheetNavigator,
+                    sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                ) {
+                    NavigationHost(navController)
+                }
+            }
         }
     }
 
-    fun setFabListener(listener: () -> Unit) {
-        binding.fab.setOnClickListener { listener() }
+}
+
+@OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalAnimationApi::class)
+@Composable
+fun NavigationHost(
+    navController: NavHostController,
+    navigator: AppNavigator = AppNavigator()
+) {
+    LaunchedEffect("navigation") {
+        navigator.sharedFlow.onEach { route ->
+            navController.navigate(route)
+        }.launchIn(this)
     }
 
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Shows.route
+    ) {
+        composable(Screen.Shows.route) {
+            Shows(navigator)
+        }
+        composable(
+            route = "${Screen.ShowDetail.route}/{${ScreenParams.SHOW_ID}}",
+            arguments = listOf(navArgument(ScreenParams.SHOW_ID) {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            ShowDetail(
+                id = backStackEntry.arguments?.getInt(ScreenParams.SHOW_ID) ?: -1,
+                navController
+            )
+        }
+        composable(Screen.Favorites.route) {
+            Favorites(navController)
+        }
+    }
 }
