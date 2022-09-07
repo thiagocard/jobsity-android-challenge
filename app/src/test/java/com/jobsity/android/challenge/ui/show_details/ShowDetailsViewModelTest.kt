@@ -1,24 +1,32 @@
 package com.jobsity.android.challenge.ui.show_details
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.jobsity.android.challenge.domain.model.EpisodesOfShow
+import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.domain.repository.EpisodesRepository
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
 import com.jobsity.android.challenge.test.sampleShowDetails
+import com.jobsity.android.challenge.ui.ScreenParams
 import com.jobsity.android.challenge.ui.ViewModelTest
-import io.mockk.coEvery
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 class ShowDetailsViewModelTest : ViewModelTest() {
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val showsRepository = mockk<ShowsRepository>()
     private val episodesRepository = mockk<EpisodesRepository>()

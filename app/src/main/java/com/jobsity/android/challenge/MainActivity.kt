@@ -3,7 +3,6 @@ package com.jobsity.android.challenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +20,7 @@ import com.jobsity.android.challenge.ui.AppNavigator
 import com.jobsity.android.challenge.ui.Screen
 import com.jobsity.android.challenge.ui.ScreenParams
 import com.jobsity.android.challenge.ui.favorite_shows.Favorites
+import com.jobsity.android.challenge.ui.home.Home
 import com.jobsity.android.challenge.ui.show_details.ShowDetail
 import com.jobsity.android.challenge.ui.shows.Shows
 import com.jobsity.android.challenge.ui.theme.AppTheme
@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-@OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun NavigationHost(
     navController: NavHostController,
@@ -67,8 +66,11 @@ fun NavigationHost(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Shows.route
+        startDestination = Screen.Home.route
     ) {
+        composable(Screen.Home.route) {
+            Home(navigator)
+        }
         composable(Screen.Shows.route) {
             Shows(navigator)
         }

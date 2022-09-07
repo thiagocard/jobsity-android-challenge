@@ -12,12 +12,12 @@ import org.junit.Before
 abstract class ViewModelTest {
 
     @Before
-    fun setUp() {
+    open fun setUp() {
         Dispatchers.setMain(StandardTestDispatcher())
     }
 
     @After
-    fun tearDown() {
+    open fun tearDown() {
         Dispatchers.resetMain()
     }
 

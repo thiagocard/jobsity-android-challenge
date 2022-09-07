@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import com.jobsity.android.challenge.domain.repository.ShowsRepository
 import com.jobsity.android.challenge.ui.ViewState
 import com.jobsity.android.challenge.ui.resultToViewState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class ShowsSearchViewModel(
+@HiltViewModel
+class ShowsSearchViewModel @Inject constructor(
     private val showsRepository: ShowsRepository
 ) : ViewModel() {
 

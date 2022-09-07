@@ -19,7 +19,7 @@ class ShowAtListMapperTest {
     @Test
     fun `map works with success`() {
         val shows = fromJson<List<Show>>(this, "get_shows.json")
-        val mapped = shows.map { ShowAtListMapper.map(it) }
+        val mapped = shows.map { ShowAtListMapper().map(it) }
         assertEquals(shows.size, mapped.size)
         shows.forEachIndexed { index, show -> runAssertions(show, mapped[index]) }
     }
@@ -28,7 +28,7 @@ class ShowAtListMapperTest {
     fun `map returns -1 to show's year when no premier date found`() {
         val shows = fromJson<List<Show>>(this, "get_shows.json")
         val showWithoutPremierDate = shows.first().copy(premiered = null)
-        val mapped = ShowAtListMapper.map(showWithoutPremierDate)
+        val mapped = ShowAtListMapper().map(showWithoutPremierDate)
         runAssertions(showWithoutPremierDate, mapped)
     }
 

@@ -20,6 +20,7 @@ val sampleShowDetails = ShowDetails(
     rating = 9.5,
     status = "Ended",
     year = 2022,
+    runtime = 60,
 )
 
 /**

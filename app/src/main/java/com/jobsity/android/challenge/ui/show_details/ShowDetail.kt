@@ -1,17 +1,14 @@
 package com.jobsity.android.challenge.ui.show_details
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.with
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -19,11 +16,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -38,7 +36,6 @@ import com.jobsity.android.challenge.ui.common.Loading
 import com.jobsity.android.challenge.ui.common.UrlImage
 import com.jobsity.android.challenge.ui.common.VerticalSpacer
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ShowDetail(
     id: Int,
@@ -47,25 +44,26 @@ fun ShowDetail(
     val showViewModel = hiltViewModel<ShowDetailsViewModel>()
         .also { it.setShowId(id) }
 
+    val density = LocalDensity.current
+
     when (val viewState = showViewModel.show.collectAsState(initial = ViewState.Loading).value) {
         is ViewState.Error -> {}
         ViewState.Idle -> {}
-        is ViewState.Loaded -> AnimatedContent(
-            targetState = viewState,
-            transitionSpec = {
-                val animationSpec: TweenSpec<IntOffset> = tween(500)
-                val direction = AnimatedContentScope.SlideDirection.Up
-                slideIntoContainer(
-                    towards = direction,
-                    animationSpec = animationSpec
-                ) with
-                        slideOutOfContainer(
-                            towards = direction,
-                            animationSpec = animationSpec
-                        )
-            }
+        is ViewState.Loaded -> AnimatedVisibility(
+            visible = true,
+            enter = slideInVertically {
+                // Slide in from 40 dp from the top.
+                with(density) { -40.dp.roundToPx() }
+            } + expandVertically(
+                // Expand from the top.
+                expandFrom = Alignment.Bottom
+            ) + fadeIn(
+                // Fade in with the initial alpha of 0.3f.
+                initialAlpha = 0.3f
+            ),
+            exit = slideOutVertically() + shrinkVertically() + fadeOut()
         ) {
-            Screen(viewState.data)
+            Screen(viewState.requireData()) { showViewModel.addOrRemoveToFavorites() }
         }
         ViewState.Loading -> Loading()
     }
@@ -89,33 +87,42 @@ fun PreviewScreen() {
             year = 2013,
             runtime = 145,
         )
-    )
+    ) {}
 }
 
 @Composable
-fun Screen(details: ShowDetails) {
+fun Screen(
+    details: ShowDetails,
+    onFavoriteClicked: () -> Unit,
+) {
+    val scrollState = rememberScrollState()
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(MaterialTheme.colorScheme.primary)
+            .verticalScroll(scrollState)
+            .background(Color.White)
     ) {
         val boxHeight = 360.dp
         Icon(
-            Icons.Outlined.FavoriteBorder,
+            imageVector = if (details.isFavorite) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
             contentDescription = "Favorite",
             tint = Color.White,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(top = 16.dp, end = 16.dp)
-                .zIndex(3f),
-
-            )
+                .zIndex(3f)
+                .clickable(onClick = onFavoriteClicked),
+        )
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(boxHeight)
+                .background(MaterialTheme.colorScheme.primary)
+                .graphicsLayer {
+                    // alpha = 1f - ((scrollState.value.toFloat() / scrollState.maxValue) * 1.5f)
+                    translationY = .3f * scrollState.value
+                }
         ) {
             UrlImage(
                 url = details.poster,
@@ -123,15 +130,14 @@ fun Screen(details: ShowDetails) {
                     .fillMaxWidth()
             )
         }
-        val radius = 24.dp
+        val radius = 32.dp
         Card(
             shape = RoundedCornerShape(topStart = radius, topEnd = radius),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.elevatedCardElevation(),
+            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 12.dp),
             modifier = Modifier
                 .padding(top = boxHeight - 25.dp)
-                .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxSize()
                 .zIndex(2f)
         ) {
             Column(
@@ -150,7 +156,6 @@ fun Screen(details: ShowDetails) {
 }
 
 private val subTextStyle = TextStyle(
-    fontSize = 13.sp,
     fontWeight = FontWeight.Bold
 )
 

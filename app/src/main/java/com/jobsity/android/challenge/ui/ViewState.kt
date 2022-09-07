@@ -3,7 +3,7 @@ package com.jobsity.android.challenge.ui
 sealed class ViewState<out T> {
     object Idle : ViewState<Nothing>()
     object Loading : ViewState<Nothing>()
-    data class Loaded<T>(val data: T) : ViewState<T>()
+    data class Loaded<T>(val data: T) : ViewState<T>() { fun requireData() = data!! }
     data class Error(val throwable: Throwable) : ViewState<Nothing>()
 
     fun isLoaded() = this is Loaded
@@ -12,6 +12,6 @@ sealed class ViewState<out T> {
     fun errorMessage() = if (this is Error) this.throwable.message else null
     fun dataOrThrow() =
         if (this is Loaded) this.data else (this as? Error)?.throwable?.let { throw it }
-            ?: throw IllegalStateException("ViewState couldn't either get data nor error exception")
+            ?: error("ViewState couldn't either get data nor error exception")
     fun dataOrNull() = if (this is Loaded) this.data else null
 }

@@ -26,8 +26,8 @@ class FavoriteShowsViewModelTest : ViewModelTest() {
     private val vm by lazy { FavoriteShowsViewModel(repo) }
 
     private val shows = listOf(
-        ShowAtList(id = 1, name = "A", poster = "", status = "", year = 0),
-        ShowAtList(id = 2, name = "Z", poster = "", status = "", year = 0),
+        ShowAtList(id = 1, name = "A", poster = "", status = "", year = 0, overview = "", runtime = 0),
+        ShowAtList(id = 2, name = "Z", poster = "", status = "", year = 0, overview = "", runtime = 0),
     )
 
     @Before

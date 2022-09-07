@@ -12,7 +12,7 @@ class EpisodeOfShowMapperTest {
     @Test
     fun `map works with success`() {
         val episodes = fromJson<List<Episode>>(this, "get_show_episodes.json")
-        val mapped = episodes.map { EpisodeOfShowMapper.map(it) }
+        val mapped = episodes.map { EpisodeOfShowMapper().map(it) }
         episodes.forEachIndexed { index, episode -> runAssertions(episode, mapped[index]) }
     }
 

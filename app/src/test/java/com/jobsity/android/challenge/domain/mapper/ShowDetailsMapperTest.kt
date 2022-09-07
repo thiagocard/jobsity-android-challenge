@@ -10,7 +10,7 @@ class ShowDetailsMapperTest {
     @Test
     fun `map works with success`() {
         val show = fromJson<Show>(this, "get_show.json")
-        val mapped = ShowDetailsMapper.map(show)
+        val mapped = ShowDetailsMapper().map(show)
 
         assertEquals(show.id, mapped.id)
         assertEquals(show.name, mapped.name)

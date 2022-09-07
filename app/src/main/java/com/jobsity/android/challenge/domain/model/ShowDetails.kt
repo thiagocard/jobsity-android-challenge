@@ -12,4 +12,5 @@ data class ShowDetails(
     val status: String,
     val year: Int,
     val runtime: Int?,
+    val isFavorite: Boolean = false
 )

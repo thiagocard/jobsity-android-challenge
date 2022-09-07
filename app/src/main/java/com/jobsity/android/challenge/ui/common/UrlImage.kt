@@ -22,7 +22,6 @@ fun UrlImage(
             .build(),
         contentDescription = contentDescription.orEmpty(),
         contentScale = ContentScale.Crop,
-        placeholder = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
         modifier = modifier
     )
 }

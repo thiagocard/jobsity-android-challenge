@@ -1,4 +1,4 @@
-package com.jobsity.android.challenge.ui.shows
+package com.jobsity.android.challenge.ui.shows_search
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth

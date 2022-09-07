@@ -14,7 +14,9 @@ val showAtListMapper = object : Mapper<Show, ShowAtList> {
         name = input.name,
         poster = input.image?.original ?: "",
         status = "Continuing",
-        year = 2022
+        year = 2022,
+        overview = input.summary,
+        runtime = input.runtime
     )
 }
 
@@ -28,7 +30,8 @@ val showDetailsMapper = object : Mapper<Show, ShowDetails> {
         summary = input.summary ?: "N/A",
         rating = 10.0,
         status = input.status,
-        year = 2022
+        year = 2022,
+        runtime = input.runtime,
     )
 }
 val favoriteShowMapper = object : Mapper<ShowAtList, FavoriteShow> {
@@ -38,6 +41,8 @@ val favoriteShowMapper = object : Mapper<ShowAtList, FavoriteShow> {
         poster = input.poster,
         status = input.status,
         year = input.year,
+        overview = input.overview,
+        runtime = input.runtime,
     )
 }
 val favShowToShowAtListMapper = object : Mapper<FavoriteShow, ShowAtList> {
@@ -47,5 +52,7 @@ val favShowToShowAtListMapper = object : Mapper<FavoriteShow, ShowAtList> {
         poster = input.poster,
         status = input.status,
         year = input.year,
+        overview = input.overview,
+        runtime = input.runtime,
     )
 }
