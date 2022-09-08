@@ -26,30 +26,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.jobsity.android.challenge.R
 import com.jobsity.android.challenge.domain.model.ShowDetails
 import com.jobsity.android.challenge.ext.asMovieRuntime
 import com.jobsity.android.challenge.ext.removeHtmlTags
 import com.jobsity.android.challenge.ui.ViewState
-import com.jobsity.android.challenge.ui.common.Loading
+import com.jobsity.android.challenge.ui.ViewStateHandler
 import com.jobsity.android.challenge.ui.common.UrlImage
 import com.jobsity.android.challenge.ui.common.VerticalSpacer
 
 @Composable
 fun ShowDetail(
-    id: Int,
-    navController: NavHostController
+    id: Int
 ) {
     val showViewModel = hiltViewModel<ShowDetailsViewModel>()
         .also { it.setShowId(id) }
 
     val density = LocalDensity.current
+    val viewState = showViewModel.show.collectAsState(initial = ViewState.Loading).value
 
-    when (val viewState = showViewModel.show.collectAsState(initial = ViewState.Loading).value) {
-        is ViewState.Error -> {}
-        ViewState.Idle -> {}
-        is ViewState.Loaded -> AnimatedVisibility(
+    ViewStateHandler(
+        viewState,
+        onError = {},
+    ) {
+        AnimatedVisibility(
             visible = true,
             enter = slideInVertically {
                 // Slide in from 40 dp from the top.
@@ -63,9 +63,8 @@ fun ShowDetail(
             ),
             exit = slideOutVertically() + shrinkVertically() + fadeOut()
         ) {
-            Screen(viewState.requireData()) { showViewModel.addOrRemoveToFavorites() }
+            Screen(it) { showViewModel.addOrRemoveToFavorites() }
         }
-        ViewState.Loading -> Loading()
     }
 }
 
@@ -91,7 +90,7 @@ fun PreviewScreen() {
 }
 
 @Composable
-fun Screen(
+private fun Screen(
     details: ShowDetails,
     onFavoriteClicked: () -> Unit,
 ) {

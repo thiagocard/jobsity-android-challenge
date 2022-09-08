@@ -28,6 +28,7 @@ class ShowsRepositoryImpl @Inject constructor(
     private val showAtListMapper: Mapper<Show, ShowAtList>,
     private val showDetailsMapper: Mapper<Show, ShowDetails>,
     private val favoriteShowMapper: Mapper<ShowAtList, FavoriteShow>,
+    private val showDetailToShowAtListMapper: Mapper<ShowDetails, ShowAtList>,
     private val favShowToShowAtListMapper: Mapper<FavoriteShow, ShowAtList>,
 ) : ShowsRepository {
 

@@ -42,6 +42,7 @@ class ShowsRepositoryTest {
             showDetailsMapper = showDetailsMapper,
             favoriteShowMapper = favoriteShowMapper,
             favShowToShowAtListMapper = favShowToShowAtListMapper,
+            showDetailToShowAtListMapper = showDetailsToShowAtListDetailMapper,
         )
     }
 
@@ -77,7 +78,17 @@ class ShowsRepositoryTest {
         coEvery { favoriteShowDao.insert(any()) } returns 1
 
         val result =
-            repo.addToFavorites(ShowAtList(id = 1, name = "", poster = "", status = "", year = 1, overview = "", runtime = 60))
+            repo.addToFavorites(
+                ShowAtList(
+                    id = 1,
+                    name = "",
+                    poster = "",
+                    status = "",
+                    year = 1,
+                    overview = "",
+                    runtime = 60
+                )
+            )
         assertTrue(result.isSuccess)
     }
 

@@ -56,3 +56,14 @@ val favShowToShowAtListMapper = object : Mapper<FavoriteShow, ShowAtList> {
         runtime = input.runtime,
     )
 }
+val showDetailsToShowAtListDetailMapper = object : Mapper<ShowDetails, ShowAtList> {
+    override fun map(input: ShowDetails) = ShowAtList(
+        id = input.id,
+        name = input.name,
+        poster = input.poster,
+        status = input.status,
+        year = input.year,
+        overview = input.summary,
+        runtime = input.runtime,
+    )
+}

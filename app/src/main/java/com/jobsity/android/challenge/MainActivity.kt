@@ -15,14 +15,16 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.navigation.material.bottomSheet
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.jobsity.android.challenge.ui.AppNavigator
 import com.jobsity.android.challenge.ui.Screen
 import com.jobsity.android.challenge.ui.ScreenParams
+import com.jobsity.android.challenge.ui.common.AppScaffold
 import com.jobsity.android.challenge.ui.favorite_shows.Favorites
-import com.jobsity.android.challenge.ui.home.Home
 import com.jobsity.android.challenge.ui.show_details.ShowDetail
 import com.jobsity.android.challenge.ui.shows.Shows
+import com.jobsity.android.challenge.ui.shows_search.Search
 import com.jobsity.android.challenge.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
 }
 
+@OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
 fun NavigationHost(
     navController: NavHostController,
@@ -66,27 +69,26 @@ fun NavigationHost(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Shows.route
     ) {
-        composable(Screen.Home.route) {
-            Home(navigator)
-        }
         composable(Screen.Shows.route) {
-            Shows(navigator)
+            AppScaffold(navigator) { Shows(navigator) }
         }
-        composable(
+        composable(Screen.Search.route) {
+            AppScaffold(navigator) { Search(navigator) }
+        }
+        bottomSheet(
             route = "${Screen.ShowDetail.route}/{${ScreenParams.SHOW_ID}}",
             arguments = listOf(navArgument(ScreenParams.SHOW_ID) {
                 type = NavType.IntType
             })
         ) { backStackEntry ->
             ShowDetail(
-                id = backStackEntry.arguments?.getInt(ScreenParams.SHOW_ID) ?: -1,
-                navController
+                id = backStackEntry.arguments?.getInt(ScreenParams.SHOW_ID) ?: -1
             )
         }
         composable(Screen.Favorites.route) {
-            Favorites(navController)
+            AppScaffold(navigator) { Favorites(navigator) }
         }
     }
 }

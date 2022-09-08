@@ -15,7 +15,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class MapperModule {
+abstract class   MapperModule {
     @Binds
     abstract fun provideShowAtListMapper(mapper: ShowAtListMapper): Mapper<Show, ShowAtList>
 
@@ -29,8 +29,11 @@ abstract class MapperModule {
     abstract fun provideEpisodeOfShowMapper(mapper: EpisodeOfShowMapper): Mapper<Episode, EpisodeOfShow>
 
     @Binds
-    abstract fun provideFavShowToShowAtListMapper(mapper: FavShowToShowAtListMapper): Mapper<FavoriteShow, ShowAtList>
+    abstract fun provideFavShowToShowAtListMapper(mapper: FavoriteShowToShowAtListMapper): Mapper<FavoriteShow, ShowAtList>
 
     @Binds
     abstract fun provideFavShowMapper(mapper: FavoriteShowMapper): Mapper<ShowAtList, FavoriteShow>
+
+    @Binds
+    abstract fun provideShowDetailsToShowAtListMapper(mapper: ShowDetailsToShowAtListMapper): Mapper<ShowDetails, ShowAtList>
 }

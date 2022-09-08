@@ -5,10 +5,10 @@ package com.jobsity.android.challenge.ui
  */
 sealed class Screen(val route: String) {
     /** The main route with the list of all heroes. */
-    object Home : Screen("home")
     object Shows : Screen("shows")
     object ShowDetail : Screen("show_detail")
     object Favorites : Screen("favorites")
+    object Search : Screen("search")
 
     fun withArgs(vararg args: String): String {
         return buildString {
@@ -20,5 +20,4 @@ sealed class Screen(val route: String) {
 
 object ScreenParams {
     const val SHOW_ID = "showId"
-    const val SHOW = "show"
 }

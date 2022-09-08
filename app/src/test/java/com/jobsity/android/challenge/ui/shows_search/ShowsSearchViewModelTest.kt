@@ -26,11 +26,11 @@ class ShowsSearchViewModelTest : ViewModelTest() {
         val shows = listOf<ShowAtList>()
         coEvery { showsRepository.search(any()) } returns flowOf(Result.success(ShowsAtList(shows = shows)))
 
-        vm.setQuery("Game of Thrones")
+        vm.search("Game of Thrones")
         val results = vm.result.take(2).toList()
         assertTrue(results[0].isLoading())
         assertTrue(results[1].isLoaded())
-        assertEquals(shows, results[1].dataOrThrow().shows)
+        assertEquals(shows, results[1].dataOrThrow().data?.shows)
     }
 
 }

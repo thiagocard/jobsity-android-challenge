@@ -1,6 +1,5 @@
 package com.jobsity.android.challenge.ui.shows
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -18,30 +17,26 @@ import com.jobsity.android.challenge.ui.common.ShowCard
 @Composable
 fun Shows(navigator: AppNavigator) {
     val lazyListState = rememberLazyListState()
-    val showsViewModel = hiltViewModel<ShowsViewModel>()
-    val lazyPagingItems = showsViewModel.shows.collectAsLazyPagingItems()
+    val viewModel = hiltViewModel<ShowsViewModel>()
+    val lazyPagingItems = viewModel.shows.collectAsLazyPagingItems()
 
-    Box(
+    LazyColumn(
+        state = lazyListState,
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn(
-            state = lazyListState,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(lazyPagingItems) { show ->
-                show?.let {
-                    ShowCard(show) { show ->
-                        navigator.navigate(Screen.ShowDetail.withArgs(show.id.toString()))
-                    }
+        items(lazyPagingItems) { show ->
+            show?.let {
+                ShowCard(show) { show ->
+                    navigator.navigate(Screen.ShowDetail.withArgs(show.id.toString()))
                 }
             }
-            when {
-                lazyPagingItems.loadState.append == LoadState.Loading -> {
-                    item { Loading() }
-                }
-                lazyPagingItems.loadState.refresh == LoadState.Loading -> {
-                    item { Loading() }
-                }
+        }
+        when {
+            lazyPagingItems.loadState.append == LoadState.Loading -> {
+                item { Loading() }
+            }
+            lazyPagingItems.loadState.refresh == LoadState.Loading -> {
+                item { Loading() }
             }
         }
     }

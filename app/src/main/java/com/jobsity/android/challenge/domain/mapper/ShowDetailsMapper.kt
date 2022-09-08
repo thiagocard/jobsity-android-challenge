@@ -2,6 +2,7 @@ package com.jobsity.android.challenge.domain.mapper
 
 import com.jobsity.android.challenge.data.model.Show
 import com.jobsity.android.challenge.domain.model.ShowDetails
+import com.jobsity.android.challenge.ext.removeHtmlTags
 import javax.inject.Inject
 
 class ShowDetailsMapper @Inject constructor() : Mapper<Show, ShowDetails> {
@@ -12,7 +13,7 @@ class ShowDetailsMapper @Inject constructor() : Mapper<Show, ShowDetails> {
         poster = input.image?.original ?: "",
         airsAt = "${input.schedule.days.joinToString()}, ${input.schedule.time}",
         genres = input.genres,
-        summary = input.summary ?: "",
+        summary = input.summary?.removeHtmlTags() ?: "",
         rating = input.rating.average ?: 0.0,
         status = input.status,
         year = input.premiered?.year ?: -1,

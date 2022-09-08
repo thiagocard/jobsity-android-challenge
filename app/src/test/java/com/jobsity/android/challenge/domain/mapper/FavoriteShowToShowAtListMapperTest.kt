@@ -16,7 +16,7 @@ class FavoriteShowToShowAtListMapperTest {
             overview = "",
             runtime = 60
         )
-        val mapped = FavShowToShowAtListMapper().map(show)
+        val mapped = FavoriteShowToShowAtListMapper().map(show)
         kotlin.test.assertEquals(show.id, mapped.id)
         kotlin.test.assertEquals(show.name, mapped.name)
         kotlin.test.assertEquals(show.poster, mapped.poster)
